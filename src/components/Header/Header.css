@@ -1,0 +1,30 @@
+.header {
+  height: 75px;
+  width: 100%;
+  background-color: rgb(223, 223, 223);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: fixed;
+}
+
+.header__spacer {
+  height: 75px;
+  width: 100%;
+  display: block;
+}
+
+.header__left {
+  display: flex;
+  align-items: center;
+}
+
+.header__title {
+  padding: 0 20px;
+}
+
+.header__right {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 20px;
+}

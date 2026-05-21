@@ -2,6 +2,8 @@ import "./App.css";
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { GlobalProvider } from "../GlobalState/GlobalState";
+import Header from "../Header/Header";
+import Main from "../Main/Main";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -10,6 +12,7 @@ const App = () => {
   }, [pathname]);
   return (
     <GlobalProvider>
+      <Header />
       <Routes>
         <Route path="/" element={<Main />} />
       </Routes>
