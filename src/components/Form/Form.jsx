@@ -1,6 +1,7 @@
 import "./Form.css";
 import { useForm } from "../../hooks/useForm";
 import { useRef, useState } from "react";
+import { useGlobal } from "../GlobalState/GlobalState";
 
 {
   /* <Form
@@ -17,6 +18,7 @@ import { useRef, useState } from "react";
 }
 
 const Form = ({ inputs = [], onSuccessfulSubmit }) => {
+  const { modalOpen, setModalOpen } = useGlobal();
   const { values, handleChange, setValues } = useForm({
     name: "",
     location: "",
@@ -89,7 +91,7 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
       return;
     }
 
-    console.log("Valid:", values);
+    console.log("(from form) Valid:", values);
 
     setValues({
       name: "",
@@ -100,7 +102,8 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
       message: "",
     });
 
-    onSuccessfulSubmit();
+    setModalOpen(false);
+    onSuccessfulSubmit(values);
   }
 
   return (
@@ -116,7 +119,7 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
                 type={input.type}
                 className="form__input"
                 placeholder={input.placeholder}
-                value={values[name]}
+                value={values[input.name]}
                 onChange={handleChange}
               />
               {errors[input.name] ? (
