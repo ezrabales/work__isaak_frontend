@@ -1,0 +1,37 @@
+.form {
+}
+
+.form__form {
+}
+
+.form__label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.form__input {
+  display: flex;
+  padding: 5px;
+  background-color: rgb(221, 221, 221);
+  border: 1px solid rgb(180, 180, 180);
+  border-radius: 5px;
+  cursor: text;
+  margin-top: 2px;
+}
+
+.form__input-error {
+  border-color: red;
+}
+
+.form__error-message {
+  color: red;
+  height: 18px;
+  font-weight: 300;
+}
+
+.form__submit-btn {
+  padding: 10px;
+  background-color: rgb(63, 152, 230);
+  border-radius: 10px;
+}

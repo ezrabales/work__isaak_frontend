@@ -1,7 +1,11 @@
 import "./Main.css";
 import Table from "../Table/Table";
+import { useGlobal } from "../GlobalState/GlobalState";
+import AddJobModal from "../Modal/AddJobModal";
+import AddPartModal from "../Modal/AddPartModal";
 
 const Main = () => {
+  const { modalOpen, setModalOpen } = useGlobal();
   return (
     <div className="main">
       <Table
@@ -30,7 +34,11 @@ const Main = () => {
           ],
         ]}
       />
-      <button className="main__job-btn">Add Job</button>
+      <button className="main__job-btn" onClick={() => setModalOpen("job")}>
+        Add Job
+      </button>
+      <AddJobModal />
+      <AddPartModal />
     </div>
   );
 };

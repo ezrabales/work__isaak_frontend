@@ -4,6 +4,8 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { GlobalProvider } from "../GlobalState/GlobalState";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
+import Modal from "../Modal/Modal";
+import Form from "../Form/Form";
 
 const App = () => {
   const { pathname } = useLocation();

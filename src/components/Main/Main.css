@@ -14,7 +14,7 @@
 
 .main__job-btn:hover {
   box-shadow: 0 5px 10px rgb(44, 44, 44);
-  transform: translateY(-7px);
+  transform: translateY(-4px);
 }
 
 .main__job-btn:active {
