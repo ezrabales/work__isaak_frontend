@@ -4,6 +4,24 @@
   justify-content: center;
 }
 
+.table__btn {
+  background-color: gainsboro;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+  border: 1px solid rgb(141, 141, 141);
+  transition: all 0.2s ease;
+}
+
+.table__btn:hover {
+  box-shadow: 0px 0px 5px black;
+}
+
+.table__btn:active {
+  box-shadow: inset 0px 0px 5px black;
+}
+
 table {
   width: calc(99% - 40px);
   border-collapse: collapse;
