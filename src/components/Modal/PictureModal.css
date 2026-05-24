@@ -1,0 +1,29 @@
+.pic {
+  max-width: 80vw;
+  max-height: 70vh;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  border: 1px solid #ccc;
+}
+
+.pic__track {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pic__pic {
+  flex: 0 0 auto; /* don't stretch */
+
+  max-width: 80vw;
+  max-height: 70vh;
+
+  width: auto;
+  height: auto;
+
+  object-fit: contain; /* preserve aspect ratio */
+
+  scroll-snap-align: center;
+}

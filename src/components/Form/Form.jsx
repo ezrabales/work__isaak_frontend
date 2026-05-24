@@ -27,6 +27,7 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
     email: "",
     phone: "",
     message: "",
+    reason: "",
   });
   const formRef = useRef(null);
   const [errors, setErrors] = useState({});
@@ -97,12 +98,13 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
       name: "",
       location: "",
       notes: "",
+      cost: "",
       email: "",
       phone: "",
       message: "",
+      reason: "",
     });
 
-    setModalOpen(false);
     onSuccessfulSubmit(values);
   }
 

@@ -12,17 +12,17 @@ export function useForm(inputValues) {
 }
 
 // const { values, handleChange, setValues } = useForm({
-//     name: "ezra",
-//     email: "asdf@gmail.com",
-//     phone: "111-111-1111",
-//     message: "asdf",
-//   });
-
-// values = {
 //     name: "",
 //     email: "",
 //     phone: "",
 //     message: "",
+//   });
+
+// values = {
+//     name: "ezra",
+//     email: "asdf@gmail.com",
+//     phone: "111-111-1111",
+//     message: "asdf",
 //   }
 
 // handleChange is used on onChange for an input

@@ -6,7 +6,12 @@ const CreateNewPartModal = () => {
   const { modalOpen, setModalOpen } = useGlobal();
   if (modalOpen !== "createPart") return;
   return (
-    <Modal title={"Add New Part"}>
+    <Modal
+      title={"Add New Part"}
+      backTo={() => {
+        setModalOpen("part");
+      }}
+    >
       <Form
         inputs={[
           {

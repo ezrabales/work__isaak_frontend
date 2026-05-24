@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./Modal.css";
 import { useGlobal } from "../GlobalState/GlobalState";
 
-const Modal = ({ children, title }) => {
+const Modal = ({ children, title, backTo = false }) => {
   const { modalOpen, setModalOpen } = useGlobal();
 
   useEffect(() => {
@@ -30,11 +30,14 @@ const Modal = ({ children, title }) => {
   return (
     <div className="modal">
       <div className="modal__container">
-        <h2 className="modal__title">{title}</h2>
+        <h2 className={`${backTo ? "modal__title_with-back" : "modal__title"}`}>
+          {title}
+        </h2>
         <button
           className="modal__close-btn"
           onClick={() => setModalOpen(false)}
         />
+        {backTo && <button className="modal__back-btn" onClick={backTo} />}
         {children}
       </div>
     </div>

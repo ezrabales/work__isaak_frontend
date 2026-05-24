@@ -6,6 +6,8 @@ import CreateNewPartModal from "../Modal/CreateNewPartModal";
 import InvoiceModal from "../Modal/InvoiceModal";
 import { useState } from "react";
 import AddPartModal from "../Modal/AddPartModal";
+import AdditionalChargesDiscountsModal from "../Modal/AdditionalChargesDiscountsModal";
+import PictureModal from "../Modal/PictureModal";
 
 const Main = () => {
   const { modalOpen, setModalOpen } = useGlobal();
@@ -17,7 +19,14 @@ const Main = () => {
         "Some st. Kalispell, MT",
         "Did a thing",
 
-        <button className="table__btn">Pictures</button>,
+        <button
+          className="table__btn"
+          onClick={() => {
+            setModalOpen("pictures");
+          }}
+        >
+          Pictures
+        </button>,
         <div style={{ display: "flex" }}>
           <span className="red-dot" />
           Not charged
@@ -48,7 +57,7 @@ const Main = () => {
   });
 
   function onJobSubmit(e) {
-    console.log(e);
+    setModalOpen(false);
     const newRow = [
       e.location,
       e.notes,
@@ -83,8 +92,10 @@ const Main = () => {
       </button>
       <AddJobModal onSuccessfulSubmit={onJobSubmit} />
       <CreateNewPartModal />
+      <AdditionalChargesDiscountsModal />
       <AddPartModal />
       <InvoiceModal invoiceNum={invoiceNum} />
+      <PictureModal />
     </div>
   );
 };
