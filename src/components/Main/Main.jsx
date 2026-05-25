@@ -15,9 +15,17 @@ const Main = () => {
   const [invoiceNum, setInvoiceNum] = useState();
   const [photos, setPhotos] = useState([]);
   const [mainTable, setMainTable] = useState({
-    head: ["Location", "Notes", "Pictures", "Payment Status", "Invoice"],
+    head: [
+      "Invoice Number",
+      "Location",
+      "Notes",
+      "Pictures",
+      "Payment Status",
+      "Invoice",
+    ],
     body: [
       [
+        "invoice_1",
         "Some st. Kalispell, MT",
         "Did a thing",
 
@@ -45,6 +53,7 @@ const Main = () => {
         </button>,
       ],
       [
+        "invoice_2",
         "Some st. Columbia Falls, MT",
         "Did another thing",
         <button className="table__btn">Pictures</button>,

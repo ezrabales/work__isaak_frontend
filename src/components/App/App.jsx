@@ -5,6 +5,7 @@ import { GlobalProvider } from "../GlobalState/GlobalState";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import PriceSettings from "../PriceSettings/PriceSettings";
+import Footer from "../Footer/Footer";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/" element={<Main />} />
         <Route path="/settings" element={<PriceSettings />} />
       </Routes>
+      <Footer />
     </GlobalProvider>
   );
 };

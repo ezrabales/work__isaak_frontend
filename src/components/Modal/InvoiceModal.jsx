@@ -93,6 +93,7 @@ const InvoiceModal = ({ invoiceNum }) => {
       total += part.quantity * part.cost + (part.extra || 0);
     });
     setTotalForParts(total);
+    localStorage.setItem("invoice_1.parts", JSON.stringify(updatedInvoice));
   }, [updatedInvoice]);
 
   useEffect(() => {

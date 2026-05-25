@@ -1,4 +1,5 @@
 .settings {
+  height: calc(100vh - 150px);
 }
 
 .settings__title {
@@ -42,7 +43,6 @@
   border-radius: 10px;
   text-align: center;
   transition: all 0.2s ease;
-  margin-top: 5px;
   color: white;
 }
 

@@ -14,6 +14,35 @@ const PriceSettings = () => {
     ["part4", "$10"],
     ["part5", "$10"],
   ];
+
+  // temporary, move to invoice later
+  const downloadPDF = async () => {
+    const element = pdfRef.current;
+
+    const canvas = await html2canvas(element);
+
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "px",
+      format: "a4",
+    });
+
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+    pdf.save("price-settings.pdf");
+  };
+  {
+    /* <button onClick={downloadPDF}>Download PDF</button> */
+  }
+  // import jsPDF from "jspdf";
+  // import html2canvas from "html2canvas";
+  // const pdfRef = useRef();
+
   return (
     <div className="settings">
       <h2 className="settings__title">Price Settings</h2>
