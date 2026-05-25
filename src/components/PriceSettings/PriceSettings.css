@@ -1,0 +1,83 @@
+.settings {
+}
+
+.settings__title {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.settings__input {
+  border: 1px solid rgb(148, 203, 255);
+  width: 7ch;
+  background-color: white;
+  cursor: text;
+  padding: 2px;
+}
+
+.settings__hour-rate {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin: 0 30px;
+}
+
+.settings__table-container {
+}
+
+.settings__table-title {
+  margin: auto;
+  border-bottom: 1px solid black;
+  width: fit-content;
+}
+
+.settings__table-btn-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings__table-btn-container button {
+  padding: 5px 10px;
+  background-color: rgb(230, 63, 63);
+  border-radius: 10px;
+  text-align: center;
+  transition: all 0.2s ease;
+  margin-top: 5px;
+  color: white;
+}
+
+.settings__table-btn-container button:hover {
+  box-shadow: 0px 0px 5px black;
+}
+
+.settings__table-btn-container button:active {
+  box-shadow: inset 0px 0px 5px black;
+}
+
+.settings__table-btn-container button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.settings__add-part-btn {
+  padding: 7px;
+  background-color: rgb(63, 152, 230);
+  border-radius: 10px;
+  width: calc(100% - 40px);
+  text-align: center;
+  transition: all 0.2s ease;
+  margin: 5px 20px;
+}
+
+.settings__add-part-btn:hover {
+  box-shadow: 0px 0px 5px black;
+}
+
+.settings__add-part-btn:active {
+  box-shadow: inset 0px 0px 5px black;
+}
+
+.settings__add-part-btn:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
