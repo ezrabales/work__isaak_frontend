@@ -8,10 +8,12 @@ import { useState } from "react";
 import AddPartModal from "../Modal/AddPartModal";
 import AdditionalChargesDiscountsModal from "../Modal/AdditionalChargesDiscountsModal";
 import PictureModal from "../Modal/PictureModal";
+import AddPictureModal from "../Modal/AddPictureModal";
 
 const Main = () => {
   const { modalOpen, setModalOpen } = useGlobal();
   const [invoiceNum, setInvoiceNum] = useState();
+  const [photos, setPhotos] = useState([]);
   const [mainTable, setMainTable] = useState({
     head: ["Location", "Notes", "Pictures", "Payment Status", "Invoice"],
     body: [
@@ -95,7 +97,8 @@ const Main = () => {
       <AdditionalChargesDiscountsModal />
       <AddPartModal />
       <InvoiceModal invoiceNum={invoiceNum} />
-      <PictureModal />
+      <PictureModal photos={photos} />
+      <AddPictureModal setPhotos={setPhotos} />
     </div>
   );
 };

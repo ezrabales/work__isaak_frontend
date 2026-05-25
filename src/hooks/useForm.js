@@ -4,8 +4,12 @@ export function useForm(inputValues) {
   const [values, setValues] = useState(inputValues);
 
   const handleChange = (event) => {
-    const { value, name } = event.target;
-    setValues({ ...values, [name]: value });
+    const { name, value, type, files } = event.target;
+
+    setValues((prev) => ({
+      ...prev,
+      [name]: type === "file" ? files[0] : value,
+    }));
   };
 
   return { values, handleChange, setValues };

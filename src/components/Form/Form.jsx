@@ -28,6 +28,8 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
     phone: "",
     message: "",
     reason: "",
+    file: "",
+    description: "",
   });
   const formRef = useRef(null);
   const [errors, setErrors] = useState({});
@@ -39,7 +41,7 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
       const value = values[input.name] || "";
 
       if (input.required) {
-        if (!value.trim()) {
+        if (value === "" || value === null || value === undefined) {
           errors[input.name] =
             `${input.name.charAt(0).toUpperCase() + input.name.slice(1)} is required`;
         }
@@ -103,6 +105,8 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
       phone: "",
       message: "",
       reason: "",
+      file: "",
+      description: "",
     });
 
     onSuccessfulSubmit(values);
@@ -121,8 +125,11 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
                 type={input.type}
                 className="form__input"
                 placeholder={input.placeholder}
-                value={values[input.name]}
+                accept={input.accept}
                 onChange={handleChange}
+                {...(input.type !== "file"
+                  ? { value: values[input.name] }
+                  : {})}
               />
               {errors[input.name] ? (
                 <span className="form__error-message">
