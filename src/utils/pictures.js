@@ -10,7 +10,7 @@ function checkResponse(res) {
 }
 
 export const uploadPicture = ({ src, description, invoiceNumber, token }) => {
-  return fetch(`${BASE_URL}/picture`, {
+  return fetch(`${BASE_URL}/pictures`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export const uploadPicture = ({ src, description, invoiceNumber, token }) => {
 };
 
 export const getPictures = ({ token, invoiceNumber }) => {
-  return fetch(`${BASE_URL}/picture/${invoiceNumber}`, {
+  return fetch(`${BASE_URL}/pictures/${invoiceNumber}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

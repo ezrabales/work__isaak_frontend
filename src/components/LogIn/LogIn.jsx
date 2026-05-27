@@ -2,34 +2,29 @@ import { useState } from "react";
 import { authorize, register } from "../../utils/auth";
 import Form from "../Form/Form";
 import "./LogIn.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const LogIn = ({ setIsLoggedIn }) => {
   const [authOption, setAuthOption] = useState("logIn");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
 
   const handleLogIn = ({ email, password }) => {
     authorize({ email, password })
       .then((res) => {
-        const handleLogIn = ({ email, password }) => {
-          authorize({ email, password })
-            .then((res) => {
-              if (res.token) {
-                localStorage.setItem("jwt", res.token);
-                setIsLoggedIn(true);
-                navigate("/");
-              }
-            })
-            .catch(console.error);
-        };
+        if (res.token) {
+          localStorage.setItem("jwt", res.token);
+          setIsLoggedIn(true);
+          navigate(from, { replace: true });
+        }
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(console.error);
   };
 
-  const handleRegister = ({ email, password, name }) => {
-    register({ password, email, name })
+  const handleRegister = ({ email, password }) => {
+    register({ password, email })
       .then(() => {
         return authorize({ email, password });
       })
@@ -38,7 +33,7 @@ const LogIn = ({ setIsLoggedIn }) => {
           localStorage.setItem("jwt", res.token);
         }
         setIsLoggedIn(true);
-        navigate("/");
+        navigate(from, { replace: true });
       })
       .catch((err) => {
         console.error("Registration or login error:", err);

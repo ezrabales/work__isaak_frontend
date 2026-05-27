@@ -1,29 +1,85 @@
 import Modal from "./Modal";
 import Form from "../Form/Form";
 import { useGlobal } from "../GlobalState/GlobalState";
+import { updateJob } from "../../utils/jobs";
 
-const EditJobModal = () => {
+const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
   const { modalOpen, setModalOpen } = useGlobal();
   if (modalOpen !== "editJob") return;
+
+  function editJob(values) {
+    console.log(values);
+    updateJob({
+      token,
+      jobId: selectedJob._id,
+      location: values.location,
+      notes: values.notes,
+      paymentStatus: values.status,
+      dateStarted: values.dateStarted,
+      dateEnded: values.dateEnded,
+    })
+      .then((res) => {
+        setBody((prev) =>
+          prev.map((row) =>
+            row[0] === res.invoiceNumber
+              ? [
+                  res.invoiceNumber,
+                  res.location,
+                  res.notes,
+                  row[3],
+                  setStatus(res.paymentStatus),
+                  row[5],
+                  new Date(res.dateStarted).toLocaleDateString(),
+                  res.dateEnded
+                    ? new Date(res.dateEnded).toLocaleDateString()
+                    : "",
+                  res.dateEnded
+                    ? (() => {
+                        const diff =
+                          new Date(res.dateEnded) - new Date(res.dateStarted);
+
+                        const days = diff / (1000 * 60 * 60 * 24);
+
+                        return `${days.toFixed(1)} days`;
+                      })()
+                    : "",
+                  row[9],
+                ]
+              : row,
+          ),
+        );
+        setModalOpen(false);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
   return (
     <Modal title={"Edit Job"}>
       <p className="invoice-num">
-        Invoice Number: <span className="invoice-num-num">invoice_1</span>
+        Invoice Number:{" "}
+        <span className="invoice-num-num">{selectedJob.invoiceNumber}</span>
       </p>
       <Form
+        onSuccessfulSubmit={editJob}
+        initialValues={{
+          location: selectedJob.location,
+          notes: selectedJob.notes,
+          status: selectedJob.paymentStatus,
+          dateStarted: selectedJob.dateStarted
+            ? new Date(selectedJob.dateStarted).toISOString().split("T")[0]
+            : "",
+          dateEnded: selectedJob.dateEnded
+            ? new Date(selectedJob.dateEnded).toISOString().split("T")[0]
+            : "",
+        }}
         inputs={[
-          {
-            name: "invoice",
-            type: "text",
-            placeholder: "Invoice number",
-            labelText: "Invoice Number *",
-            required: true,
-          },
           {
             name: "location",
             type: "address",
             placeholder: "Location",
-            labelText: "Address *",
+            labelText: "Location *",
             required: true,
           },
           {
@@ -44,14 +100,14 @@ const EditJobModal = () => {
             labelText: "Payment Status *",
             required: true,
             options: [
-              { value: "notCharged", label: "Not Charged" },
-              { value: "awaitingPayment", label: "Awaiting Payment" },
-              { value: "partialPayment", label: "Partially Paid" },
-              { value: "fullPayment", label: "Paid in Full" },
+              { value: "Not Charged", label: "Not Charged" },
+              { value: "Awaiting Payment", label: "Awaiting Payment" },
+              { value: "Partially Paid", label: "Partially Paid" },
+              { value: "Paid in Full", label: "Paid in Full" },
             ],
           },
           {
-            name: "dateStated",
+            name: "dateStarted",
             type: "date",
             labelText: "Date Started *",
             required: true,

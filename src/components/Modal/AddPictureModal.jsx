@@ -4,8 +4,7 @@ import Modal from "./Modal";
 import Form from "../Form/Form";
 import { uploadPicture } from "../../utils/pictures";
 
-const AddPictureModal = ({ setPhotos }) => {
-  const token = localStorage.getItem("jwt");
+const AddPictureModal = ({ setPhotos, invoiceNum, token }) => {
   const { modalOpen, setModalOpen } = useGlobal();
   const [loading, setLoading] = useState(false);
 
@@ -47,7 +46,7 @@ const AddPictureModal = ({ setPhotos }) => {
       uploadPicture({
         src: data.secure_url,
         description: values.description,
-        invoiceNumber: "1234",
+        invoiceNumber: invoiceNum,
         token: token,
       })
         .then(() => setModalOpen("pictures"))

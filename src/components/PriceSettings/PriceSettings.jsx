@@ -1,19 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./PriceSettings.css";
 import Table from "../Table/Table";
 import CreateNewPartModal from "../Modal/CreateNewPartModal";
 import { useGlobal } from "../GlobalState/GlobalState";
-
+import { editRate, getRate } from "../../utils/auth";
+import { createPart, deletePart, getParts } from "../../utils/parts";
 const PriceSettings = () => {
+  const token = localStorage.getItem("jwt");
   const { modalOpen, setModalOpen } = useGlobal();
-  const [hourlyRate, setHourlyRate] = useState(75);
-  const parts = [
-    ["part1", "$10"],
-    ["part2", "$10"],
-    ["part3", "$10"],
-    ["part4", "$10"],
-    ["part5", "$10"],
-  ];
+  const { parts, setParts } = useGlobal();
+  const [hourlyRate, setHourlyRate] = useState("");
+
+  useEffect(() => {
+    // rate
+    getRate({ token })
+      .then((res) => setHourlyRate(res.rate))
+      .catch((err) => console.error(err));
+
+    // parts
+    getParts({ token })
+      .then((res) => setParts(res.data))
+      .catch((err) => console.error(err));
+  }, []);
 
   // temporary, move to invoice later
   const downloadPDF = async () => {
@@ -57,6 +65,7 @@ const PriceSettings = () => {
             value={hourlyRate}
             onChange={(e) => {
               setHourlyRate(e.target.value);
+              editRate({ token, rate: e.target.value });
             }}
           />
           /hr
@@ -64,24 +73,32 @@ const PriceSettings = () => {
       </div>
       <div className="settings__table-container">
         <h3 className="settings__table-title">Parts</h3>
-        <Table
-          head={["Name", "Cost"]}
-          body={parts.map(([name, cost], index) => [
-            name,
-            <div className="settings__table-btn-container">
-              {cost}
-              <button
-                id={index}
-                onClick={(e) => {
-                  const id = e.target.id;
-                  console.log(`TODO: Delete part ${id}`);
-                }}
-              >
-                Delete
-              </button>
-            </div>,
-          ])}
-        />
+        {parts.length <= 0 ? (
+          <div>No Parts</div>
+        ) : (
+          <Table
+            head={["Name", "Cost"]}
+            body={parts.map(({ _id, name, cost }, index) => [
+              name,
+              <div className="settings__table-btn-container">
+                {cost}
+                <button
+                  id={_id}
+                  onClick={(e) => {
+                    const id = e.target.id;
+                    deletePart({ token, id }).then((res) => {
+                      setParts((prev) =>
+                        prev.filter((part) => part._id !== res.id),
+                      );
+                    });
+                  }}
+                >
+                  Delete
+                </button>
+              </div>,
+            ])}
+          />
+        )}
       </div>
       <button
         className="settings__add-part-btn"
@@ -91,7 +108,7 @@ const PriceSettings = () => {
       >
         Add Part
       </button>
-      <CreateNewPartModal />
+      <CreateNewPartModal token={token} setParts={setParts} />
     </div>
   );
 };

@@ -1,15 +1,13 @@
 import Modal from "./Modal";
 import { useGlobal } from "../GlobalState/GlobalState";
 import Table from "../Table/Table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "../../hooks/useForm";
+import { getParts } from "../../utils/parts";
 
-const AddPartModal = () => {
+const AddPartModal = ({ token, invoiceNum }) => {
   const { modalOpen, setModalOpen } = useGlobal();
-  const [parts, setParts] = useState([
-    { name: "some pvc elbow", quantity: 0, cost: 10 },
-    { name: "some pvc part", quantity: 0, cost: 8 },
-  ]);
+  const { parts, setParts } = useGlobal();
 
   function setPartsValue(num, value) {
     setParts((prev) =>
@@ -24,6 +22,19 @@ const AddPartModal = () => {
     );
   }
 
+  useEffect(() => {
+    getParts({ token })
+      .then((res) => {
+        setParts(
+          res.data.map((part) => ({
+            ...part,
+            quantity: 0,
+          })),
+        );
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   if (modalOpen !== "part") return;
   return (
     <Modal
@@ -32,46 +43,65 @@ const AddPartModal = () => {
         setModalOpen("invoice");
       }}
     >
-      <Table
-        head={["Name", "Cost", "Add", "Quantity"]}
-        body={parts.map((part, index) => {
-          return [
-            part.name,
-            `$${part.cost}`,
-            <button
-              className="sections__section-row-btn"
-              onClick={() => {
-                setPartsValue(index);
-              }}
-            >
-              Add Part
-            </button>,
-            part.quantity > 0 ? (
-              <input
-                type="number"
-                className="sections__section-input"
-                value={part.quantity}
-                onChange={(e) => {
-                  setPartsValue(index, e.target.value);
+      {parts.length <= 0 ? (
+        <div>No Parts</div>
+      ) : (
+        <Table
+          head={["Name", "Cost", "Add", "Quantity"]}
+          body={parts.map((part, index) => {
+            return [
+              part.name,
+              `$${part.cost}`,
+              <button
+                className="sections__section-row-btn"
+                onClick={() => {
+                  setPartsValue(index);
                 }}
-              />
-            ) : (
-              ""
-            ),
-          ];
-        })}
-      />
-      <button
-        className="sections__section-btn"
-        onClick={() => {
-          const usedParts = parts.filter((part) => Number(part.quantity) > 0);
+              >
+                Add Part
+              </button>,
+              part.quantity > 0 ? (
+                <input
+                  type="number"
+                  className="sections__section-input"
+                  value={part.quantity}
+                  onChange={(e) => {
+                    setPartsValue(index, e.target.value);
+                  }}
+                />
+              ) : (
+                ""
+              ),
+            ];
+          })}
+        />
+      )}
 
-          localStorage.setItem("invoice_1.parts", JSON.stringify(usedParts));
-          setModalOpen("invoice");
-        }}
-      >
-        Add to Invoice
-      </button>
+      {parts.length <= 0 ? (
+        ""
+      ) : (
+        <button
+          className="sections__section-btn"
+          onClick={() => {
+            const usedParts = parts.filter((part) => Number(part.quantity) > 0);
+
+            const savedInvoice =
+              JSON.parse(localStorage.getItem(invoiceNum)) || {};
+
+            localStorage.setItem(
+              invoiceNum,
+              JSON.stringify({
+                ...savedInvoice,
+                parts: usedParts,
+              }),
+            );
+            setModalOpen("invoice");
+          }}
+        >
+          Add to Invoice
+        </button>
+      )}
+
       <button
         className="sections__section-btn"
         onClick={() => setModalOpen("createPart")}

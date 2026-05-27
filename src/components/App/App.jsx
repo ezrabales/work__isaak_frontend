@@ -14,31 +14,33 @@ import { checkToken } from "../../utils/auth";
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState("");
-  const { pathname } = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     const currentToken = localStorage.getItem("jwt");
-    setToken(currentToken);
+    const from = location.pathname === "/login" ? "/" : location.pathname;
 
     if (!currentToken) {
       return;
     }
 
+    setToken(currentToken);
+
     checkToken(currentToken)
-      .then((userData) => {
+      .then(() => {
         setIsLoggedIn(true);
-        navigate("/");
+        navigate(from, { replace: true });
       })
       .catch(console.error);
   }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, []);
 
   return (
-    <GlobalProvider value={{ token, setToken }}>
+    <GlobalProvider>
       <Header />
       <Routes>
         <Route

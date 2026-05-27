@@ -5,12 +5,8 @@ import { useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import Form from "../Form/Form";
 
-const AdditionalChargesDiscountsModal = () => {
+const AdditionalChargesDiscountsModal = ({ invoiceNum }) => {
   const { modalOpen, setModalOpen } = useGlobal();
-  const [additions, setAdditions] = useState([
-    { reason: "some reason", cost: 20 },
-    { reason: "some other reason", cost: -10 },
-  ]);
 
   if (modalOpen !== "additional") return;
   return (
@@ -22,15 +18,23 @@ const AdditionalChargesDiscountsModal = () => {
     >
       <Form
         onSuccessfulSubmit={(e) => {
-          const currentAdditions =
-            JSON.parse(localStorage.getItem("invoice_1.additions")) || [];
+          const savedInvoice =
+            JSON.parse(localStorage.getItem(invoiceNum)) || {};
+
+          const currentAdditions = savedInvoice.additions || [];
 
           localStorage.setItem(
-            "invoice_1.additions",
-            JSON.stringify([
-              ...currentAdditions,
-              { reason: e.reason, cost: Number(e.cost) },
-            ]),
+            invoiceNum,
+            JSON.stringify({
+              ...savedInvoice,
+              additions: [
+                ...currentAdditions,
+                {
+                  reason: e.reason,
+                  cost: Number(e.cost),
+                },
+              ],
+            }),
           );
 
           setModalOpen("invoice");

@@ -3,13 +3,15 @@ import Form from "../Form/Form";
 import { useGlobal } from "../GlobalState/GlobalState";
 import { createJob } from "../../utils/jobs";
 
-const AddJobModal = () => {
-  const token = localStorage.getItem("jwt");
+const AddJobModal = ({ setJobs, token }) => {
   const { modalOpen, setModalOpen } = useGlobal();
 
   function addJob(values) {
     createJob({ location: values.location, notes: values.notes, token })
-      .then(() => setModalOpen(false))
+      .then((res) => {
+        setModalOpen(false);
+        setJobs((prev) => [...prev, res]);
+      })
       .catch((err) => console.error(err));
   }
 

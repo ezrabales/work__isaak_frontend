@@ -6,67 +6,86 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "../../hooks/useForm";
 
 const InvoiceModal = ({ invoiceNum }) => {
-  const [invoice, setInvoice] = useState(
-    JSON.parse(localStorage.getItem("invoice_1.parts")) || [],
-  );
-  const [updatedInvoice, setUpdatedInvoice] = useState(invoice);
+  const savedInvoice = JSON.parse(localStorage.getItem(invoiceNum)) || {};
 
-  const [additions, setAdditions] = useState(
-    JSON.parse(localStorage.getItem("invoice_1.additions")) || [],
-  );
+  const [invoice, setInvoice] = useState(savedInvoice.parts || []);
+  const [additions, setAdditions] = useState(savedInvoice.additions || []);
+  const [totalExtra, setTotalExtra] = useState(savedInvoice.totalExtra || 0);
+  const service = savedInvoice.service || {};
+
+  const [updatedInvoice, setUpdatedInvoice] = useState(invoice);
   const [updatedAdditions, setUpdatedAdditions] = useState(additions);
 
   const [partsTabOpen, setPartsTabOpen] = useState(true);
   const [chargesTabOpen, setChargesTabOpen] = useState(true);
-  const [totalDifference, setTotalDifference] = useState();
   const [totalForParts, setTotalForParts] = useState();
   const [totalForAdditions, setTotalForAdditions] = useState();
   const [localHrRate, setLocalHrRate] = useState(75);
   const { modalOpen, setModalOpen } = useGlobal();
 
+  function saveInvoice(updates) {
+    const current = JSON.parse(localStorage.getItem(invoiceNum)) || {};
+
+    localStorage.setItem(
+      invoiceNum,
+      JSON.stringify({
+        ...current,
+        ...updates,
+      }),
+    );
+  }
+
   useEffect(() => {
     if (modalOpen === "invoice") {
-      const freshInvoice =
-        JSON.parse(localStorage.getItem("invoice_1.parts")) || [];
+      const savedInvoice = JSON.parse(localStorage.getItem(invoiceNum)) || {};
+
+      const freshInvoice = savedInvoice.parts || [];
+      const freshAdditions = savedInvoice.additions || [];
+      const freshService = savedInvoice.service || {};
+      const freshTotalExtra = savedInvoice.totalExtra || 0;
 
       setInvoice(freshInvoice);
       setUpdatedInvoice(freshInvoice);
 
-      const freshAdditions =
-        JSON.parse(localStorage.getItem("invoice_1.additions")) || [];
-
       setAdditions(freshAdditions);
       setUpdatedAdditions(freshAdditions);
+
+      setTotalExtra(freshTotalExtra);
+
+      setValues((prev) => ({
+        ...prev,
+        hours: freshService.hours || "",
+        hrRate: freshService.hrRate || localHrRate,
+        totalForHours: freshService.totalForHours || "",
+        totalExtra: freshTotalExtra,
+      }));
     }
-  }, [modalOpen]);
+  }, [modalOpen, invoiceNum]);
 
   const { values, handleChange, setValues } = useForm({
-    hours: "",
-    totalForHours: "",
-    hrRate: localHrRate,
-    total: "",
+    hours: service.hours || "",
+    totalForHours: service.totalForHours || "",
+    hrRate: service.hrRate || localHrRate,
   });
 
-  useEffect(() => {
-    const totalForHours = values.hours * localHrRate;
-    setValues((prev) => ({
-      ...prev,
-      totalForHours,
-    }));
-  }, [values.hours]);
+  const calculatedTotal =
+    (totalForParts || 0) +
+    (totalForAdditions || 0) +
+    (Number(values.totalForHours) || 0);
+
+  const finalTotal = calculatedTotal + Number(totalExtra);
 
   useEffect(() => {
-    const totalForHours = values.hours * values.hrRate;
     setValues((prev) => ({
       ...prev,
-      totalForHours,
+      totalForHours: Number(values.hours) * Number(values.hrRate),
     }));
-  }, [values.hrRate]);
+  }, [values.hours, values.hrRate]);
 
   useEffect(() => {
     if (!values.totalForHours || !values.hours) return;
 
-    const hrRate = values.totalForHours / values.hours;
+    const hrRate = Number(values.totalForHours) / Number(values.hours);
     setValues((prev) => ({
       ...prev,
       hrRate,
@@ -74,35 +93,56 @@ const InvoiceModal = ({ invoiceNum }) => {
   }, [values.totalForHours]);
 
   useEffect(() => {
-    const total = totalForAdditions + totalForParts + values.totalForHours;
-    const totalDifference = values.total - total;
-    setTotalDifference(totalDifference);
-  }, [values.total]);
+    if (!invoiceNum) return;
 
-  useEffect(() => {
-    const total = totalForAdditions + totalForParts + values.totalForHours;
-    setValues((prev) => ({
-      ...prev,
-      total,
-    }));
-  }, [totalForAdditions, totalForParts, values.totalForHours]);
+    saveInvoice({
+      totalExtra,
+    });
+  }, [invoiceNum, totalExtra]);
 
   useEffect(() => {
     let total = 0;
-    updatedInvoice.map((part) => {
+
+    updatedInvoice.forEach((part) => {
       total += part.quantity * part.cost + (part.extra || 0);
     });
+
     setTotalForParts(total);
-    localStorage.setItem("invoice_1.parts", JSON.stringify(updatedInvoice));
+
+    if (invoiceNum) {
+      saveInvoice({
+        parts: updatedInvoice,
+      });
+    }
   }, [updatedInvoice]);
 
   useEffect(() => {
     let total = 0;
-    updatedAdditions.map((addition) => {
+
+    updatedAdditions.forEach((addition) => {
       total += addition.cost;
     });
+
     setTotalForAdditions(total);
+
+    if (invoiceNum) {
+      saveInvoice({
+        additions: updatedAdditions,
+      });
+    }
   }, [updatedAdditions]);
+
+  useEffect(() => {
+    if (!invoiceNum) return;
+
+    saveInvoice({
+      service: {
+        hours: values.hours,
+        hrRate: values.hrRate,
+        totalForHours: values.totalForHours,
+      },
+    });
+  }, [invoiceNum, values.hours, values.hrRate, values.totalForHours]);
 
   function plusMinusMoneyFormat(num) {
     return `${num > 0 ? "+" : "-"}$${Math.abs(num)}`;
@@ -189,10 +229,9 @@ const InvoiceModal = ({ invoiceNum }) => {
                           (_, i) => i !== index,
                         );
 
-                        localStorage.setItem(
-                          "invoice_1.parts",
-                          JSON.stringify(tempInvoice),
-                        );
+                        saveInvoice({
+                          parts: tempInvoice,
+                        });
 
                         setUpdatedInvoice(tempInvoice);
                       }}
@@ -297,10 +336,9 @@ const InvoiceModal = ({ invoiceNum }) => {
                           (_, i) => i !== index,
                         );
 
-                        localStorage.setItem(
-                          "invoice_1.additions",
-                          JSON.stringify(tempAdditions),
-                        );
+                        saveInvoice({
+                          additions: tempAdditions,
+                        });
 
                         setUpdatedAdditions(tempAdditions);
                       }}
@@ -329,9 +367,9 @@ const InvoiceModal = ({ invoiceNum }) => {
               <p>Total:</p>
             </div>
             <div className="sections__section-part">
-              {totalDifference !== 0 ? (
+              {totalExtra !== 0 ? (
                 <p className="sections__section-difference">
-                  {plusMinusMoneyFormat(totalDifference)}
+                  {plusMinusMoneyFormat(totalExtra)}
                 </p>
               ) : (
                 ""
@@ -341,22 +379,20 @@ const InvoiceModal = ({ invoiceNum }) => {
               <input
                 className="sections__section-input"
                 type="number"
-                name="total"
-                value={values.total}
-                onChange={handleChange}
+                value={finalTotal}
+                onChange={(e) => {
+                  setTotalExtra(Number(e.target.value) - calculatedTotal);
+                }}
               />
             </div>
           </div>
         </div>
-        <button
-          className="sections__section-btn"
-          disabled={totalDifference !== 0}
-        >
+        <button className="sections__section-btn" disabled={totalExtra !== 0}>
           Invoice
         </button>
-        {totalDifference != 0 && (
+        {totalExtra != 0 && (
           <button className="sections__section-btn">
-            {totalDifference > 0
+            {totalExtra > 0
               ? "Add Additional Charge"
               : "Add Additional Discount"}
           </button>

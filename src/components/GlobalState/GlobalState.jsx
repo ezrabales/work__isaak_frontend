@@ -4,9 +4,12 @@ const GlobalContext = createContext();
 
 export function GlobalProvider({ children }) {
   const [modalOpen, setModalOpen] = useState(false);
+  const [parts, setParts] = useState([]);
 
   return (
-    <GlobalContext.Provider value={{ modalOpen, setModalOpen }}>
+    <GlobalContext.Provider
+      value={{ modalOpen, setModalOpen, parts, setParts }}
+    >
       {children}
     </GlobalContext.Provider>
   );

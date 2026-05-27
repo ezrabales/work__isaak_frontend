@@ -1,6 +1,6 @@
 import "./Form.css";
 import { useForm } from "../../hooks/useForm";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGlobal } from "../GlobalState/GlobalState";
 
 {
@@ -17,9 +17,9 @@ import { useGlobal } from "../GlobalState/GlobalState";
 /> */
 }
 
-const Form = ({ inputs = [], onSuccessfulSubmit }) => {
+const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
   const { modalOpen, setModalOpen } = useGlobal();
-  const { values, handleChange, setValues } = useForm({
+  const defaultValues = {
     name: "",
     location: "",
     notes: "",
@@ -31,12 +31,15 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
     file: "",
     description: "",
     invoice: "",
-    location: "",
-    notes: "",
     status: "",
-    dateStated: "",
+    dateStarted: "",
     dateEnded: "",
+  };
+  const { values, handleChange, setValues } = useForm({
+    ...defaultValues,
+    ...initialValues,
   });
+
   const formRef = useRef(null);
   const [errors, setErrors] = useState({});
 

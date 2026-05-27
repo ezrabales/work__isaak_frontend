@@ -5,8 +5,7 @@ import { tempPhoto } from "../../assets";
 import { getPictures } from "../../utils/pictures";
 import { useEffect, useState } from "react";
 
-const PictureModal = () => {
-  const token = localStorage.getItem("jwt");
+const PictureModal = ({ invoiceNum, token }) => {
   const { modalOpen, setModalOpen } = useGlobal();
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -14,18 +13,20 @@ const PictureModal = () => {
   useEffect(() => {
     setLoading(true);
 
-    getPictures({
-      invoiceNumber: "1234",
-      token,
-    })
-      .then((res) => {
-        setPhotos(res.data);
+    if (invoiceNum) {
+      getPictures({
+        invoiceNumber: invoiceNum,
+        token,
       })
-      .catch(console.error)
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [modalOpen == "pictures"]);
+        .then((res) => {
+          setPhotos(res.data);
+        })
+        .catch(console.error)
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [modalOpen == "pictures", invoiceNum]);
 
   if (modalOpen !== "pictures") return;
   return (

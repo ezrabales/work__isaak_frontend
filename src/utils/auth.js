@@ -8,13 +8,13 @@ function checkResponse(res) {
     return Promise.reject(err);
   });
 }
-export const register = ({ name, email, password }) => {
+export const register = ({ email, password }) => {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name, email, password }),
+    body: JSON.stringify({ email, password }),
   }).then(checkResponse);
 };
 
@@ -31,6 +31,27 @@ export const authorize = ({ email, password }) => {
 
 export const checkToken = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  }).then(checkResponse);
+};
+
+export const editRate = ({ token, rate }) => {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ rate }),
+  }).then(checkResponse);
+};
+
+export const getRate = ({ token }) => {
+  return fetch(`${BASE_URL}/users/rate`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
