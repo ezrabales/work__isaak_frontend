@@ -15,7 +15,7 @@ const AddJobModal = ({ onSuccessfulSubmit }) => {
             type: "text",
             placeholder: "Location",
             labelText: "Location *",
-            required: "true",
+            required: true,
           },
           {
             name: "notes",

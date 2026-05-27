@@ -60,13 +60,13 @@
 }
 
 .settings__add-part-btn {
-  padding: 7px;
+  margin: 20px;
+  padding: 12px;
   background-color: rgb(63, 152, 230);
   border-radius: 10px;
   width: calc(100% - 40px);
   text-align: center;
   transition: all 0.2s ease;
-  margin: 5px 20px;
 }
 
 .settings__add-part-btn:hover {

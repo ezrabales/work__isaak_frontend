@@ -1,6 +1,6 @@
 import "./Form.css";
 import { useForm } from "../../hooks/useForm";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useGlobal } from "../GlobalState/GlobalState";
 
 {
@@ -11,7 +11,7 @@ import { useGlobal } from "../GlobalState/GlobalState";
       type: "text",
       placeholder: "Name",
       labelText: "Name *",
-      required: "true",
+      required: true,
     },
   ]}
 /> */
@@ -30,6 +30,12 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
     reason: "",
     file: "",
     description: "",
+    invoice: "",
+    location: "",
+    notes: "",
+    status: "",
+    dateStated: "",
+    dateEnded: "",
   });
   const formRef = useRef(null);
   const [errors, setErrors] = useState({});
@@ -107,6 +113,12 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
       reason: "",
       file: "",
       description: "",
+      invoice: "",
+      location: "",
+      notes: "",
+      status: "",
+      dateStated: "",
+      dateEnded: "",
     });
 
     onSuccessfulSubmit(values);
@@ -116,9 +128,56 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
     <div className="form">
       <form className="form__form" ref={formRef}>
         {inputs.map((input, i) => {
+          if (React.isValidElement(input)) {
+            return <div key={i}>{input}</div>;
+          }
+
+          if (input.type === "radio") {
+            return (
+              <div className="form__radio" key={i}>
+                <p>{input.labelText}</p>
+
+                <div
+                  className={`form__radio-group ${
+                    errors[input.name] ? "form__input-error" : ""
+                  }`}
+                >
+                  {input.options.map((option) => (
+                    <label
+                      key={option.value}
+                      className={
+                        values[input.name] === option.value
+                          ? "form__radio-option form__radio-option--checked"
+                          : "form__radio-option"
+                      }
+                    >
+                      <input
+                        type="radio"
+                        name={input.name}
+                        value={option.value}
+                        checked={values[input.name] === option.value}
+                        onChange={handleChange}
+                        required={input.required}
+                      />
+
+                      {option.label}
+                    </label>
+                  ))}
+                </div>
+
+                {errors[input.name] && (
+                  <span className="form__error-message">
+                    {errors[input.name]}
+                  </span>
+                )}
+              </div>
+            );
+          }
+
           return (
             <label className="form__label" key={i}>
               {input.labelText}
+
               <input
                 id={input.name}
                 name={input.name}
@@ -126,17 +185,17 @@ const Form = ({ inputs = [], onSuccessfulSubmit }) => {
                 className="form__input"
                 placeholder={input.placeholder}
                 accept={input.accept}
+                required={input.required}
                 onChange={handleChange}
                 {...(input.type !== "file"
-                  ? { value: values[input.name] }
+                  ? { value: values[input.name] || "" }
                   : {})}
               />
-              {errors[input.name] ? (
+
+              {errors[input.name] && (
                 <span className="form__error-message">
                   {errors[input.name]}
                 </span>
-              ) : (
-                <span className="form__error-message" />
               )}
             </label>
           );

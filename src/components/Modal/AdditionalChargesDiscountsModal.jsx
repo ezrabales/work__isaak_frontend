@@ -41,14 +41,14 @@ const AdditionalChargesDiscountsModal = () => {
             type: "text",
             placeholder: "Reason",
             labelText: "Reason *",
-            required: "true",
+            required: true,
           },
           {
             name: "cost",
             type: "number",
             placeholder: "Cost",
             labelText: "Cost *",
-            required: "true",
+            required: true,
           },
         ]}
       />

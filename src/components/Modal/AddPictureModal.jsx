@@ -2,27 +2,59 @@ import { useState } from "react";
 import { useGlobal } from "../GlobalState/GlobalState";
 import Modal from "./Modal";
 import Form from "../Form/Form";
+import { uploadPicture } from "../../utils/pictures";
 
 const AddPictureModal = ({ setPhotos }) => {
+  const token = localStorage.getItem("jwt");
   const { modalOpen, setModalOpen } = useGlobal();
 
   if (modalOpen !== "addPicture") return null;
 
-  function handleUpload(values) {
+  async function handleUpload(values) {
     const file = values.file;
+
     if (!file) return;
 
-    const imageURL = URL.createObjectURL(file);
+    const formData = new FormData();
 
-    setPhotos((prev) => [
-      ...prev,
-      {
-        src: imageURL,
+    formData.append("file", file);
+    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_PRESET);
+
+    try {
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${
+          import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+        }/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
+
+      const data = await res.json();
+
+      setPhotos((prev) => [
+        ...prev,
+        {
+          src: data.secure_url,
+          publicId: data.public_id,
+          description: values.description,
+        },
+      ]);
+
+      uploadPicture({
+        src: data.secure_url,
         description: values.description,
-      },
-    ]);
+        invoiceNumber: "1234",
+        token: token,
+      }).then((res) => {
+        console.log(res);
+      });
 
-    setModalOpen("pictures");
+      setModalOpen("pictures");
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
@@ -34,7 +66,7 @@ const AddPictureModal = ({ setPhotos }) => {
             name: "file",
             type: "file",
             accept: "image/*",
-            required: "true",
+            required: true,
           },
           {
             name: "description",

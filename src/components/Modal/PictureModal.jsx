@@ -2,9 +2,18 @@ import { useGlobal } from "../GlobalState/GlobalState";
 import Modal from "./Modal";
 import "./PictureModal.css";
 import { tempPhoto } from "../../assets";
+import { uploadPicture } from "../../utils/pictures";
 
-const PictureModal = ({ photos }) => {
+const PictureModal = () => {
+  const token = localStorage.getItem("jwt");
   const { modalOpen, setModalOpen } = useGlobal();
+
+  const photos = uploadPicture({
+    invoiceNumber: "1234",
+    token: token,
+  }).then((res) => {
+    console.log(res);
+  });
 
   if (modalOpen !== "pictures") return;
   return (

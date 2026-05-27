@@ -7,7 +7,7 @@ const CreateNewPartModal = () => {
   if (modalOpen !== "createPart") return;
   return (
     <Modal
-      title={"Add New Part"}
+      title={"Create New Part"}
       backTo={() => {
         setModalOpen("part");
       }}
@@ -19,14 +19,14 @@ const CreateNewPartModal = () => {
             type: "text",
             placeholder: "Name",
             labelText: "Name *",
-            required: "true",
+            required: true,
           },
           {
             name: "cost",
             type: "number",
             placeholder: "Cost",
             labelText: "Cost *",
-            required: "true",
+            required: true,
           },
         ]}
       />

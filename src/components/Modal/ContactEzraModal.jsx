@@ -16,7 +16,7 @@ const ContactEzraModal = ({ onSuccessfulSubmit }) => {
             type: "text",
             placeholder: "Message",
             labelText: "Message *",
-            required: "true",
+            required: true,
           },
         ]}
         onSuccessfulSubmit={onSuccessfulSubmit}

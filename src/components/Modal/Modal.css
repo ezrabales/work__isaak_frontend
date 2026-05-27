@@ -1,7 +1,9 @@
 .modal {
   position: fixed;
+  z-index: 2;
   top: 0;
   background-color: rgba(0, 0, 0, 0.281);
+  color: black;
 
   width: 100%;
   height: 100%;
@@ -95,4 +97,36 @@
 /* Hover */
 .modal__back-btn:hover::before {
   border-color: #555;
+}
+
+.edit__btn,
+.edit__btn_delete {
+  padding: 5px;
+  background-color: rgb(63, 152, 230);
+  border-radius: 10px;
+  width: 100%;
+  text-align: center;
+  transition: all 0.2s ease;
+  margin: 5px 0 10px;
+}
+
+.edit__btn:hover,
+.edit__btn_delete:hover {
+  box-shadow: 0px 0px 5px black;
+}
+
+.edit__btn:active,
+.edit__btn_delete:active {
+  box-shadow: inset 0px 0px 5px black;
+}
+
+.edit__btn:disabled,
+.edit__btn_delete:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.edit__btn_delete {
+  background-color: rgb(253, 122, 122);
+  margin-bottom: 15px;
 }
