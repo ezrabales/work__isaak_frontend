@@ -2,23 +2,37 @@ import { useGlobal } from "../GlobalState/GlobalState";
 import Modal from "./Modal";
 import "./PictureModal.css";
 import { tempPhoto } from "../../assets";
-import { uploadPicture } from "../../utils/pictures";
+import { getPictures } from "../../utils/pictures";
+import { useEffect, useState } from "react";
 
 const PictureModal = () => {
   const token = localStorage.getItem("jwt");
   const { modalOpen, setModalOpen } = useGlobal();
+  const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const photos = uploadPicture({
-    invoiceNumber: "1234",
-    token: token,
-  }).then((res) => {
-    console.log(res);
-  });
+  useEffect(() => {
+    setLoading(true);
+
+    getPictures({
+      invoiceNumber: "1234",
+      token,
+    })
+      .then((res) => {
+        setPhotos(res.data);
+      })
+      .catch(console.error)
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [modalOpen == "pictures"]);
 
   if (modalOpen !== "pictures") return;
   return (
     <Modal title={"Pictures"}>
-      {photos.length <= 0 ? (
+      {loading ? (
+        <div className="pic__loading">Loading...</div>
+      ) : photos.length <= 0 ? (
         <>
           <div className="pic__none">No pictures</div>
         </>

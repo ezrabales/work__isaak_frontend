@@ -67,41 +67,13 @@ const Main = () => {
     ],
   });
 
-  function onJobSubmit(e) {
-    setModalOpen(false);
-    const newRow = [
-      e.location,
-      e.notes,
-      <button className="table__btn">Pictures</button>,
-      <div style={{ display: "flex" }}>
-        <span className="red-dot" />
-        Not charged
-      </div>,
-      <button
-        className="table__btn"
-        id={`invoice_${mainTable.body.length + 1}`}
-        onClick={(e) => {
-          setInvoiceNum(e);
-          setModalOpen("invoice");
-        }}
-      >
-        Invoice
-      </button>,
-    ];
-
-    setMainTable((prev) => ({
-      ...prev,
-      body: [...prev.body, newRow],
-    }));
-  }
-
   return (
     <div className="main">
       <Table head={mainTable.head} body={mainTable.body} />
       <button className="main__job-btn" onClick={() => setModalOpen("job")}>
         Add Job
       </button>
-      <AddJobModal onSuccessfulSubmit={onJobSubmit} />
+      <AddJobModal />
       <CreateNewPartModal />
       <AdditionalChargesDiscountsModal />
       <AddPartModal />

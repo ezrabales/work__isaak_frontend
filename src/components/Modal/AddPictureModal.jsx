@@ -7,10 +7,12 @@ import { uploadPicture } from "../../utils/pictures";
 const AddPictureModal = ({ setPhotos }) => {
   const token = localStorage.getItem("jwt");
   const { modalOpen, setModalOpen } = useGlobal();
+  const [loading, setLoading] = useState(false);
 
   if (modalOpen !== "addPicture") return null;
 
   async function handleUpload(values) {
+    setLoading(true);
     const file = values.file;
 
     if (!file) return;
@@ -47,11 +49,13 @@ const AddPictureModal = ({ setPhotos }) => {
         description: values.description,
         invoiceNumber: "1234",
         token: token,
-      }).then((res) => {
-        console.log(res);
-      });
+      })
+        .then(() => setModalOpen("pictures"))
+        .catch((err) => {
+          console.error(err);
+        });
 
-      setModalOpen("pictures");
+      setLoading(false);
     } catch (err) {
       console.error(err);
     }
@@ -59,23 +63,27 @@ const AddPictureModal = ({ setPhotos }) => {
 
   return (
     <Modal title="Add Picture">
-      <Form
-        onSuccessfulSubmit={handleUpload}
-        inputs={[
-          {
-            name: "file",
-            type: "file",
-            accept: "image/*",
-            required: true,
-          },
-          {
-            name: "description",
-            type: "text",
-            placeholder: "Description",
-            labelText: "Description",
-          },
-        ]}
-      />
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <Form
+          onSuccessfulSubmit={handleUpload}
+          inputs={[
+            {
+              name: "file",
+              type: "file",
+              accept: "image/*",
+              required: true,
+            },
+            {
+              name: "description",
+              type: "text",
+              placeholder: "Description",
+              labelText: "Description",
+            },
+          ]}
+        />
+      )}
     </Modal>
   );
 };
