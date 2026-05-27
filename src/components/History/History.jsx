@@ -14,6 +14,7 @@ import EditPicturesModal from "../Modal/EditPicturesModal";
 import { getJobs } from "../../utils/jobs";
 
 const History = () => {
+  const { parts, setParts } = useGlobal();
   const { modalOpen, setModalOpen } = useGlobal();
   const [invoiceNum, setInvoiceNum] = useState();
   const [photos, setPhotos] = useState([]);
@@ -146,7 +147,7 @@ const History = () => {
       )}
       <CreateNewPartModal token={token} setParts={setParts} />
       <AdditionalChargesDiscountsModal />
-      <AddPartModal />
+      <AddPartModal token={token} />
       <InvoiceModal invoiceNum={invoiceNum} />
       <PictureModal invoiceNum={invoiceNum} token={token} />
       <AddPictureModal
