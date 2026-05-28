@@ -116,7 +116,14 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
             type: "date",
             labelText: "Date Ended",
           },
-          <button className="edit__btn_delete">Delete</button>,
+          <button
+            className="edit__btn_delete"
+            type="button"
+            id={selectedJob._id}
+            onClick={() => setModalOpen("deleteJob")}
+          >
+            Delete
+          </button>,
         ]}
       />
     </Modal>

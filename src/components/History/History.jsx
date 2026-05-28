@@ -11,6 +11,7 @@ import PictureModal from "../Modal/PictureModal";
 import AddPictureModal from "../Modal/AddPictureModal";
 import EditJobModal from "../Modal/EditJobModal";
 import EditPicturesModal from "../Modal/EditPicturesModal";
+import DeleteJobModal from "../Modal/DeleteJobModal";
 import { getJobs } from "../../utils/jobs";
 
 const History = () => {
@@ -168,6 +169,11 @@ const History = () => {
         setStatus={setStatus}
       />
       <EditPicturesModal photos={photos} />
+      <DeleteJobModal
+        selectedJob={selectedJob}
+        token={token}
+        setBody={setBody}
+      />
     </div>
   );
 };

@@ -57,3 +57,13 @@ export const updateJob = ({
     }),
   }).then(checkResponse);
 };
+
+export const deleteJob = ({ token, jobId }) => {
+  return fetch(`${BASE_URL}/jobs/${jobId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  }).then(checkResponse);
+};

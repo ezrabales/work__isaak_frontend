@@ -1,0 +1,60 @@
+.delete__title,
+.delete__warning {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.delete__warning {
+  color: rgb(255, 108, 108);
+}
+
+.delete__container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+
+.delete__key {
+  border-top: 1px solid rgb(79, 185, 255);
+  padding: 5px 0;
+}
+
+.delete__value {
+  max-width: 30vw;
+  line-break: normal;
+  border-top: 1px solid rgb(79, 185, 255);
+  padding: 5px 0;
+}
+
+.delete__btn-container {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+}
+
+.delete__cancel-btn,
+.delete__confirm-btn {
+  width: 50%;
+  text-align: center;
+  padding: 15px 20px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.delete__confirm-btn {
+  background-color: rgb(255, 108, 108);
+}
+
+.delete__cancel-btn {
+  background-color: wheat;
+}
+
+.delete__cancel-btn:hover,
+.delete__confirm-btn:hover {
+  box-shadow: 0px 0px 5px black;
+}
+
+.delete__cancel-btn:active,
+.delete__confirm-btn:active {
+  box-shadow: inset 0px 0px 5px black;
+}
