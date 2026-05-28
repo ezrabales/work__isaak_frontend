@@ -13,7 +13,10 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
       jobId: selectedJob._id,
       location: values.location,
       notes: values.notes,
+      email: values.email,
       paymentStatus: values.status,
+      amountOwed: values.amountOwed || selectedJob.amountOwed || "",
+      amountPaid: values.amountPaid || selectedJob.amountPaid || "",
       dateStarted: values.dateStarted,
       dateEnded: values.dateEnded,
     })
@@ -25,9 +28,10 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
                   res.invoiceNumber,
                   res.location,
                   res.notes,
-                  row[3],
+                  res.email,
+                  row[4],
                   setStatus(res.paymentStatus),
-                  row[5],
+                  row[6],
                   new Date(res.dateStarted).toLocaleDateString(),
                   res.dateEnded
                     ? new Date(res.dateEnded).toLocaleDateString()
@@ -42,7 +46,7 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
                         return `${days.toFixed(1)} days`;
                       })()
                     : "",
-                  row[9],
+                  row[10],
                 ]
               : row,
           ),
@@ -65,6 +69,7 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
         initialValues={{
           location: selectedJob.location,
           notes: selectedJob.notes,
+          email: selectedJob.email,
           status: selectedJob.paymentStatus,
           dateStarted: selectedJob.dateStarted
             ? new Date(selectedJob.dateStarted).toISOString().split("T")[0]
@@ -86,6 +91,12 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
             type: "text",
             placeholder: "Notes",
             labelText: "Notes",
+          },
+          {
+            name: "email",
+            type: "email",
+            placeholder: "Email",
+            labelText: "Email",
           },
           <button
             className="edit__btn"

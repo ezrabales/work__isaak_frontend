@@ -32,6 +32,8 @@ const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
     description: "",
     invoice: "",
     status: "",
+    amountOwed: "",
+    amountPaid: "",
     dateStarted: "",
     dateEnded: "",
   };
@@ -57,9 +59,7 @@ const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
       }
 
       if (input.name === "email") {
-        if (!value.trim()) {
-          errors.email = "Email is required";
-        } else if (value && !/\S+@\S+\.\S+/.test(value)) {
+        if (value && !/\S+@\S+\.\S+/.test(value)) {
           errors.email = "Email is invalid";
         }
       }
@@ -120,6 +120,8 @@ const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
       location: "",
       notes: "",
       status: "",
+      amountOwed: "",
+      amountPaid: "",
       dateStated: "",
       dateEnded: "",
     });
@@ -137,43 +139,83 @@ const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
 
           if (input.type === "radio") {
             return (
-              <div className="form__radio" key={i}>
-                <p>{input.labelText}</p>
+              <>
+                <div className="form__radio" key={i}>
+                  <p>{input.labelText}</p>
 
-                <div
-                  className={`form__radio-group ${
-                    errors[input.name] ? "form__input-error" : ""
-                  }`}
-                >
-                  {input.options.map((option) => (
-                    <label
-                      key={option.value}
-                      className={
-                        values[input.name] === option.value
-                          ? "form__radio-option form__radio-option--checked"
-                          : "form__radio-option"
-                      }
-                    >
-                      <input
-                        type="radio"
-                        name={input.name}
-                        value={option.value}
-                        checked={values[input.name] === option.value}
-                        onChange={handleChange}
-                        required={input.required}
-                      />
+                  <div
+                    className={`form__radio-group ${
+                      errors[input.name] ? "form__input-error" : ""
+                    }`}
+                  >
+                    {input.options.map((option) => (
+                      <label
+                        key={option.value}
+                        className={
+                          values[input.name] === option.value
+                            ? "form__radio-option form__radio-option--checked"
+                            : "form__radio-option"
+                        }
+                      >
+                        <input
+                          type="radio"
+                          name={input.name}
+                          value={option.value}
+                          checked={values[input.name] === option.value}
+                          onChange={handleChange}
+                          required={input.required}
+                        />
 
-                      {option.label}
-                    </label>
-                  ))}
+                        {option.label}
+                      </label>
+                    ))}
+                  </div>
+
+                  {errors[input.name] && (
+                    <span className="form__error-message">
+                      {errors[input.name]}
+                    </span>
+                  )}
                 </div>
-
-                {errors[input.name] && (
-                  <span className="form__error-message">
-                    {errors[input.name]}
-                  </span>
+                {values.status === "Partially Paid" && (
+                  <label className="form__label" key={i + 1000}>
+                    Amount Paid *
+                    <input
+                      id="amountPaid"
+                      name="amountPaid"
+                      type="number"
+                      className="form__input"
+                      placeholder="Amount Paid"
+                      required
+                      onChange={handleChange}
+                    />
+                    {errors["amountPaid"] && (
+                      <span className="form__error-message">
+                        {errors["amountPaid"]}
+                      </span>
+                    )}
+                  </label>
                 )}
-              </div>
+                {values.status === "Awaiting Payment" && (
+                  <label className="form__label" key={i + 1000}>
+                    Amount Owed *
+                    <input
+                      id="amountOwed"
+                      name="amountOwed"
+                      type="number"
+                      className="form__input"
+                      placeholder="Amount Owed"
+                      required
+                      onChange={handleChange}
+                    />
+                    {errors["amountOwed"] && (
+                      <span className="form__error-message">
+                        {errors["amountOwed"]}
+                      </span>
+                    )}
+                  </label>
+                )}
+              </>
             );
           }
 

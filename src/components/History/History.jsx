@@ -82,6 +82,7 @@ const History = () => {
           job.invoiceNumber,
           job.location,
           job.notes,
+          job.email,
           <button
             className="table__btn"
             onClick={(e) => {
@@ -92,8 +93,8 @@ const History = () => {
             Pictures
           </button>,
           setStatus(job.paymentStatus),
-          job.invoiceInfo ? (
-            job.invoiceInfo
+          job.amountOwed ? (
+            `Invoiced: $${job.amountOwed}`
           ) : (
             <button
               className="table__btn"
@@ -141,6 +142,7 @@ const History = () => {
             "Invoice Number",
             "Location",
             "Notes",
+            "Email",
             "Pictures",
             "Payment Status",
             "Invoice",

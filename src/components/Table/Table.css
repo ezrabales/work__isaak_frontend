@@ -5,7 +5,8 @@
   justify-content: center;
 }
 
-.table__btn {
+.table__btn,
+.table__btn_status-btn {
   background-color: gainsboro;
   border-radius: 10px;
   padding: 10px;
@@ -15,11 +16,19 @@
   transition: all 0.2s ease;
 }
 
-.table__btn:hover {
+.table__btn_status-btn {
+  width: auto;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.table__btn:hover,
+.table__btn_status-btn:hover {
   box-shadow: 0px 0px 5px black;
 }
 
-.table__btn:active {
+.table__btn:active,
+.table__btn_status-btn:active {
   box-shadow: inset 0px 0px 5px black;
 }
 

@@ -16,6 +16,7 @@ const CreateNewPartModal = ({ token, setParts, back = false }) => {
             _id: res._id,
             name: res.name,
             cost: res.cost,
+            quantity: 0,
           },
         ]);
         setModalOpen(back);

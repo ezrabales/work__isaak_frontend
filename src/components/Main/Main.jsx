@@ -10,6 +10,7 @@ import AdditionalChargesDiscountsModal from "../Modal/AdditionalChargesDiscounts
 import PictureModal from "../Modal/PictureModal";
 import AddPictureModal from "../Modal/AddPictureModal";
 import { getJobs } from "../../utils/jobs";
+import SetStatusModal from "../Modal/SetStatusModal";
 
 const Main = () => {
   const { modalOpen, setModalOpen } = useGlobal();
@@ -17,6 +18,7 @@ const Main = () => {
   const [invoiceNum, setInvoiceNum] = useState();
   const [photos, setPhotos] = useState([]);
   const [jobs, setJobs] = useState([]);
+  const [selectedJob, setSelectedJob] = useState();
   const [body, setBody] = useState([]);
   const token = localStorage.getItem("jwt");
 
@@ -30,36 +32,83 @@ const Main = () => {
       });
   }, []);
 
-  function setStatus(status) {
-    if (status === "Not Charged") {
+  function setStatus(job) {
+    if (job.paymentStatus === "Not Charged") {
       return (
         <div style={{ display: "flex" }}>
-          <span className="red-dot" />
-          Not charged
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span className="red-dot" />
+            Not Charged
+          </div>
+          <div
+            className="table__btn_status-btn"
+            onClick={() => {
+              setSelectedJob(job);
+              setModalOpen("setStatus");
+            }}
+          >
+            Set Status
+          </div>
         </div>
       );
     }
-    if (status === "Awaiting Payment") {
+
+    if (job.paymentStatus === "Awaiting Payment") {
       return (
         <div style={{ display: "flex" }}>
-          <span className="orange-dot" />
-          Awaiting Payment
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span className="orange-dot" />
+            Awaiting Payment
+          </div>
+          <div
+            className="table__btn_status-btn"
+            onClick={() => {
+              setSelectedJob(job);
+              setModalOpen("setStatus");
+            }}
+          >
+            Set Status
+          </div>
         </div>
       );
     }
-    if (status === "Partially Paid") {
+
+    if (job.paymentStatus === "Partially Paid") {
       return (
         <div style={{ display: "flex" }}>
-          <span className="blue-dot" />
-          Partially Paid
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span className="blue-dot" />
+            Partially Paid
+          </div>
+          <div
+            className="table__btn_status-btn"
+            onClick={() => {
+              setSelectedJob(job);
+              setModalOpen("setStatus");
+            }}
+          >
+            Set Status
+          </div>
         </div>
       );
     }
-    if (status === "Paid in Full") {
+
+    if (job.paymentStatus === "Paid in Full") {
       return (
         <div style={{ display: "flex" }}>
-          <span className="green-dot" />
-          Paid in Full
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span className="green-dot" />
+            Paid in Full
+          </div>
+          <div
+            className="table__btn_status-btn"
+            onClick={() => {
+              setSelectedJob(job);
+              setModalOpen("setStatus");
+            }}
+          >
+            Set Status
+          </div>
         </div>
       );
     }
@@ -67,36 +116,39 @@ const Main = () => {
 
   useEffect(() => {
     setBody(
-      jobs.map((job) => {
-        return [
-          job.invoiceNumber,
-          job.location,
-          job.notes,
-          <button
-            className="table__btn"
-            onClick={(e) => {
-              setInvoiceNum(job.invoiceNumber);
-              setModalOpen("pictures");
-            }}
-          >
-            Pictures
-          </button>,
-          setStatus(job.paymentStatus),
-          job.invoiceInfo ? (
-            job.invoiceInfo
-          ) : (
+      jobs
+        .filter((job) => job.paymentStatus !== "Paid in Full")
+        .map((job) => {
+          return [
+            job.invoiceNumber,
+            job.location,
+            job.notes,
+            job.email,
             <button
               className="table__btn"
               onClick={(e) => {
                 setInvoiceNum(job.invoiceNumber);
-                setModalOpen("invoice");
+                setModalOpen("pictures");
               }}
             >
-              Invoice
-            </button>
-          ),
-        ];
-      }),
+              Pictures
+            </button>,
+            setStatus(job),
+            job.amountOwed ? (
+              `Invoiced: $${job.amountOwed}`
+            ) : (
+              <button
+                className="table__btn"
+                onClick={(e) => {
+                  setInvoiceNum(job.invoiceNumber);
+                  setModalOpen("invoice");
+                }}
+              >
+                Invoice
+              </button>
+            ),
+          ];
+        }),
     );
   }, [jobs]);
 
@@ -110,6 +162,7 @@ const Main = () => {
             "Invoice Number",
             "Location",
             "Notes",
+            "Email",
             "Pictures",
             "Payment Status",
             "Invoice",
@@ -130,6 +183,11 @@ const Main = () => {
       <AddPictureModal
         setPhotos={setPhotos}
         invoiceNum={invoiceNum}
+        token={token}
+      />
+      <SetStatusModal
+        selectedJob={selectedJob}
+        setJobs={setJobs}
         token={token}
       />
     </div>

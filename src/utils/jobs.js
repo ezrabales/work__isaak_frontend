@@ -9,7 +9,7 @@ function checkResponse(res) {
   });
 }
 
-export const createJob = ({ token, location, notes }) => {
+export const createJob = ({ token, location, email, notes }) => {
   return fetch(`${BASE_URL}/jobs`, {
     method: "POST",
     headers: {
@@ -19,6 +19,7 @@ export const createJob = ({ token, location, notes }) => {
     body: JSON.stringify({
       location,
       notes,
+      email,
     }),
   }).then(checkResponse);
 };
@@ -38,7 +39,10 @@ export const updateJob = ({
   jobId,
   location,
   notes,
+  email,
   paymentStatus,
+  amountOwed,
+  amountPaid,
   dateStarted,
   dateEnded,
 }) => {
@@ -51,15 +55,39 @@ export const updateJob = ({
     body: JSON.stringify({
       location,
       notes,
+      email,
       paymentStatus,
+      amountOwed,
+      amountPaid,
       dateStarted,
       dateEnded,
     }),
   }).then(checkResponse);
 };
 
-export const deleteJob = ({ token, jobId }) => {
-  return fetch(`${BASE_URL}/jobs/${jobId}`, {
+export const updateJobStatus = ({
+  token,
+  jobId,
+  paymentStatus,
+  amountPaid,
+  amountOwed,
+}) => {
+  return fetch(`${BASE_URL}/jobs/status/${jobId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      paymentStatus,
+      amountPaid,
+      amountOwed,
+    }),
+  }).then(checkResponse);
+};
+
+export const deleteJob = ({ token, jobId, invoiceNumber }) => {
+  return fetch(`${BASE_URL}/jobs/${jobId}/${invoiceNumber}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

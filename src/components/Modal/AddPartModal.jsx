@@ -8,6 +8,7 @@ import { getParts } from "../../utils/parts";
 const AddPartModal = ({ token, invoiceNum }) => {
   const { modalOpen, setModalOpen } = useGlobal();
   const { parts, setParts } = useGlobal();
+  const [localParts, setLocalParts] = useState([]);
 
   function setPartsValue(num, value) {
     setParts((prev) =>
@@ -23,17 +24,26 @@ const AddPartModal = ({ token, invoiceNum }) => {
   }
 
   useEffect(() => {
+    const localInvoice = JSON.parse(localStorage.getItem(invoiceNum) || "{}");
+    setLocalParts(localInvoice.parts || []);
+  }, [invoiceNum]);
+
+  useEffect(() => {
     getParts({ token })
       .then((res) => {
         setParts(
-          res.data.map((part) => ({
-            ...part,
-            quantity: 0,
-          })),
+          res.data.map((part) => {
+            const localPart = localParts.find((lp) => lp._id === part._id);
+
+            return {
+              ...part,
+              quantity: localPart ? localPart.quantity : 0,
+            };
+          }),
         );
       })
       .catch((err) => console.error(err));
-  }, []);
+  }, [token, localParts]);
 
   if (modalOpen !== "part") return;
   return (

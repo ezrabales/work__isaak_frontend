@@ -7,7 +7,12 @@ const AddJobModal = ({ setJobs, token }) => {
   const { modalOpen, setModalOpen } = useGlobal();
 
   function addJob(values) {
-    createJob({ location: values.location, notes: values.notes, token })
+    createJob({
+      location: values.location,
+      notes: values.notes,
+      email: values.email,
+      token,
+    })
       .then((res) => {
         setModalOpen(false);
         setJobs((prev) => [...prev, res]);
@@ -32,6 +37,12 @@ const AddJobModal = ({ setJobs, token }) => {
             type: "text",
             placeholder: "Notes",
             labelText: "Notes",
+          },
+          {
+            name: "email",
+            type: "email",
+            placeholder: "Email",
+            labelText: "Email",
           },
         ]}
         onSuccessfulSubmit={addJob}

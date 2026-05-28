@@ -46,6 +46,7 @@ const AddPictureModal = ({ setPhotos, invoiceNum, token }) => {
       uploadPicture({
         src: data.secure_url,
         description: values.description,
+        assetId: data.asset_id,
         invoiceNumber: invoiceNum,
         token: token,
       })

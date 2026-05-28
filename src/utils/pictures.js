@@ -9,14 +9,20 @@ function checkResponse(res) {
   });
 }
 
-export const uploadPicture = ({ src, description, invoiceNumber, token }) => {
+export const uploadPicture = ({
+  src,
+  description,
+  assetId,
+  invoiceNumber,
+  token,
+}) => {
   return fetch(`${BASE_URL}/pictures`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ src, description, invoiceNumber }),
+    body: JSON.stringify({ src, description, assetId, invoiceNumber }),
   }).then(checkResponse);
 };
 
