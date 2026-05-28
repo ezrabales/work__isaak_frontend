@@ -125,7 +125,7 @@ const Main = () => {
       <CreateNewPartModal token={token} setParts={setParts} back={"part"} />
       <AdditionalChargesDiscountsModal invoiceNum={invoiceNum} />
       <AddPartModal token={token} invoiceNum={invoiceNum} />
-      <InvoiceModal invoiceNum={invoiceNum} />
+      <InvoiceModal invoiceNum={invoiceNum} token={token} />
       <PictureModal invoiceNum={invoiceNum} token={token} />
       <AddPictureModal
         setPhotos={setPhotos}

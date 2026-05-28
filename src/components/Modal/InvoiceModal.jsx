@@ -4,8 +4,9 @@ import Form from "../Form/Form";
 import { useGlobal } from "../GlobalState/GlobalState";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "../../hooks/useForm";
+import { getRate } from "../../utils/auth";
 
-const InvoiceModal = ({ invoiceNum }) => {
+const InvoiceModal = ({ invoiceNum, token }) => {
   const savedInvoice = JSON.parse(localStorage.getItem(invoiceNum)) || {};
 
   const [invoice, setInvoice] = useState(savedInvoice.parts || []);
@@ -20,8 +21,14 @@ const InvoiceModal = ({ invoiceNum }) => {
   const [chargesTabOpen, setChargesTabOpen] = useState(true);
   const [totalForParts, setTotalForParts] = useState();
   const [totalForAdditions, setTotalForAdditions] = useState();
-  const [localHrRate, setLocalHrRate] = useState(75);
+  const [localHrRate, setLocalHrRate] = useState(0);
   const { modalOpen, setModalOpen } = useGlobal();
+
+  useEffect(() => {
+    getRate({ token }).then((res) => {
+      setLocalHrRate(res.rate);
+    });
+  }, []);
 
   function saveInvoice(updates) {
     const current = JSON.parse(localStorage.getItem(invoiceNum)) || {};

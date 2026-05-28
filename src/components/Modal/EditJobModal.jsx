@@ -8,7 +8,6 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
   if (modalOpen !== "editJob") return;
 
   function editJob(values) {
-    console.log(values);
     updateJob({
       token,
       jobId: selectedJob._id,
@@ -58,7 +57,7 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
   return (
     <Modal title={"Edit Job"}>
       <p className="invoice-num">
-        Invoice Number:{" "}
+        Invoice Number:
         <span className="invoice-num-num">{selectedJob.invoiceNumber}</span>
       </p>
       <Form

@@ -33,6 +33,12 @@ const History = () => {
       });
   }, [modalOpen == false]);
 
+  const formatDate = (date) => {
+    const [year, month, day] = date.split("T")[0].split("-");
+
+    return `${Number(month)}/${Number(day)}/${year}`;
+  };
+
   function setStatus(status) {
     if (status === "Not Charged") {
       return (
@@ -98,8 +104,8 @@ const History = () => {
               Invoice
             </button>
           ),
-          new Date(job.dateStarted).toLocaleDateString(),
-          job.dateEnded ? new Date(job.dateEnded).toLocaleDateString() : "",
+          formatDate(job.dateStarted),
+          job.dateEnded ? formatDate(job.dateEnded) : "",
           job.dateEnded
             ? (() => {
                 const diff =
@@ -146,9 +152,9 @@ const History = () => {
         />
       )}
       <CreateNewPartModal token={token} setParts={setParts} />
-      <AdditionalChargesDiscountsModal />
-      <AddPartModal token={token} />
-      <InvoiceModal invoiceNum={invoiceNum} />
+      <AdditionalChargesDiscountsModal invoiceNum={invoiceNum} />
+      <AddPartModal token={token} invoiceNum={invoiceNum} />
+      <InvoiceModal invoiceNum={invoiceNum} token={token} />
       <PictureModal invoiceNum={invoiceNum} token={token} />
       <AddPictureModal
         setPhotos={setPhotos}
