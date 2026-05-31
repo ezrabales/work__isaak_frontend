@@ -81,7 +81,7 @@ const ConfirmInvoiceModal = ({ invoiceNum, selectedJob, token, setJobs }) => {
         parts: invoice.parts,
         service: invoice.service,
         additions: invoice.additions,
-        grandTotal: total,
+        grandTotal: total || 0,
         footer: {
           companyName: user.footer?.companyName,
           address: user.footer?.address,
