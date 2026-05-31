@@ -20,8 +20,8 @@ const CustomerInfoModal = ({ setJobs, token, selectedJob, setSelectedJob }) => {
       dateDue: values.dateDue,
 
       paymentStatus: selectedJob.status,
-      amountOwed: selectedJob.amountOwed,
-      amountPaid: selectedJob.amountPaid,
+      amountOwed: selectedJob.amountOwed || 0,
+      amountPaid: selectedJob.amountPaid || 0,
       dateStarted: selectedJob.dateStarted,
       dateEnded: selectedJob.dateEnded || "",
     })
