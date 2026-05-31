@@ -17,6 +17,7 @@ const DeleteJobModal = ({ selectedJob, token, setBody }) => {
       invoiceNumber: selectedJob.invoiceNumber,
     })
       .then((res) => {
+        localStorage.removeItem(selectedJob.invoiceNumber);
         setBody((prev) => prev.filter((job) => job._id !== res.id));
         setModalOpen(false);
         setIsLoading(false);

@@ -1,0 +1,85 @@
+.confirm__container {
+  max-height: 80vh;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.confirm {
+  background-color: white;
+}
+
+.confirm__title {
+  border-bottom: 1px solid black;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.confirm__customer-info,
+.confirm__craftsman-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 7px;
+}
+
+.confirm__craftsman-info {
+  padding: 10px 0;
+  margin: 10px 0 20px;
+  border-top: 1px solid rgb(151, 151, 151);
+  border-bottom: 1px solid rgb(151, 151, 151);
+}
+
+.confirm__invoice-total-container {
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  width: fit-content;
+  gap: 10px;
+  margin: 15px 40px 0 auto;
+}
+
+.confirm__btn-container {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  margin-top: 30px;
+}
+
+.confirm__cancel-btn,
+.confirm__confirm-btn {
+  width: 50%;
+  text-align: center;
+  padding: 15px 20px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.confirm__confirm-btn {
+  background-color: rgb(63, 152, 230);
+}
+
+.confirm__cancel-btn {
+  background-color: gainsboro;
+}
+
+.confirm__cancel-btn:hover,
+.confirm__confirm-btn:hover {
+  box-shadow: 0px 0px 5px black;
+}
+
+.confirm__cancel-btn:active,
+.confirm__confirm-btn:active {
+  box-shadow: inset 0px 0px 5px black;
+}
+
+.confirm__footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.confirm__footer p {
+  text-align: center;
+}

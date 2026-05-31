@@ -5,6 +5,7 @@ import ContactEzraModal from "../Modal/ContactEzraModal";
 
 const Footer = ({ isLoggedIn, setIsLoggedIn }) => {
   const { modalOpen, setModalOpen } = useGlobal();
+  const token = localStorage.getItem("jwt");
   return (
     <div className="footer">
       <div className="footer__nav-container">
@@ -23,12 +24,13 @@ const Footer = ({ isLoggedIn, setIsLoggedIn }) => {
           className="footer__logout-btn"
           onClick={() => {
             setIsLoggedIn(false);
+            localStorage.removeItem("jwt");
           }}
         >
           Log Out
         </button>
       )}
-      <ContactEzraModal />
+      <ContactEzraModal token={token} />
     </div>
   );
 };

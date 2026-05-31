@@ -41,3 +41,8 @@
   opacity: 0.5;
   pointer-events: none;
 }
+
+.login__form-break {
+  margin: 20px 0 15px;
+  font-size: 18px;
+}

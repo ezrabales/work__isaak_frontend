@@ -67,6 +67,7 @@ tr:hover {
   height: 9px;
   border-radius: 50%;
   margin: auto 5px auto 0;
+  flex-shrink: 0;
 }
 
 .red-dot {

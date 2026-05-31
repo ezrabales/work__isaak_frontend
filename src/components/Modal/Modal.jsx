@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./Modal.css";
 import { useGlobal } from "../GlobalState/GlobalState";
 
-const Modal = ({ children, title, backTo = false }) => {
+const Modal = ({ children, title, backTo = false, scrollY = true }) => {
   const { modalOpen, setModalOpen } = useGlobal();
 
   useEffect(() => {
@@ -38,7 +38,12 @@ const Modal = ({ children, title, backTo = false }) => {
           onClick={() => setModalOpen(false)}
         />
         {backTo && <button className="modal__back-btn" onClick={backTo} />}
-        {children}
+
+        <div
+          className={`modal__children-container ${scrollY ? "modal__children-container_scroll-y" : ""}`}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );

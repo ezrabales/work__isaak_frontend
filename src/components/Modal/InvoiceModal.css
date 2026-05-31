@@ -80,12 +80,17 @@
   pointer-events: none;
 }
 
-.sections__section-input {
+.sections__section-input,
+.sections__section-input_large {
   border: 1px solid rgb(148, 203, 255);
-  width: 7ch;
+  width: 8ch;
   background-color: white;
   cursor: text;
   padding: 2px;
+}
+
+.sections__section-input_large {
+  width: 11ch;
 }
 
 .navbar__menu-button-arrow {
@@ -154,8 +159,8 @@
 .sections__section-extra {
   position: absolute;
   top: 50%;
-  right: -50px;
-  transform: translateY(-50%);
+  right: 0;
+  transform: translate(120%, -50%);
 
   padding: 2px 4px;
   border: 1px solid #888;

@@ -9,7 +9,15 @@ function checkResponse(res) {
   });
 }
 
-export const createJob = ({ token, location, email, notes }) => {
+export const createJob = ({
+  token,
+  location,
+  name,
+  email,
+  phone,
+  description,
+  notes,
+}) => {
   return fetch(`${BASE_URL}/jobs`, {
     method: "POST",
     headers: {
@@ -18,8 +26,11 @@ export const createJob = ({ token, location, email, notes }) => {
     },
     body: JSON.stringify({
       location,
+      name,
       notes,
       email,
+      phone,
+      description,
     }),
   }).then(checkResponse);
 };
@@ -38,13 +49,18 @@ export const updateJob = ({
   token,
   jobId,
   location,
+  name,
   notes,
   email,
+  phone,
+  description,
   paymentStatus,
   amountOwed,
   amountPaid,
   dateStarted,
   dateEnded,
+  paymentTerms,
+  dateDue,
 }) => {
   return fetch(`${BASE_URL}/jobs/${jobId}`, {
     method: "PATCH",
@@ -54,13 +70,18 @@ export const updateJob = ({
     },
     body: JSON.stringify({
       location,
+      name,
       notes,
       email,
+      phone,
+      description,
       paymentStatus,
       amountOwed,
       amountPaid,
       dateStarted,
       dateEnded,
+      paymentTerms,
+      dateDue,
     }),
   }).then(checkResponse);
 };

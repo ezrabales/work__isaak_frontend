@@ -17,6 +17,8 @@ import { useGlobal } from "../GlobalState/GlobalState";
 /> */
 }
 
+// extra functionality: add errors to params so the user can create their own based on information outside the form
+
 const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
   const { modalOpen, setModalOpen } = useGlobal();
   const defaultValues = {
@@ -36,6 +38,13 @@ const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
     amountPaid: "",
     dateStarted: "",
     dateEnded: "",
+    paymentTerms: "",
+    dateDue: "",
+    rate: "",
+    companyName: "",
+    address: "",
+    payableNote: "",
+    thankYou: "",
   };
   const { values, handleChange, setValues } = useForm({
     ...defaultValues,
@@ -67,7 +76,7 @@ const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
     return errors;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setErrors({});
 
@@ -97,36 +106,24 @@ const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
       }
     });
 
-    // ✅ stop if errors
+    // stop if validation errors
     if (Object.keys(finalErrors).length > 0) {
       setErrors(finalErrors);
       return;
     }
 
-    console.log("(from form) Valid:", values);
+    const result = await onSuccessfulSubmit(values);
 
-    setValues({
-      name: "",
-      location: "",
-      notes: "",
-      cost: "",
-      email: "",
-      phone: "",
-      message: "",
-      reason: "",
-      file: "",
-      description: "",
-      invoice: "",
-      location: "",
-      notes: "",
-      status: "",
-      amountOwed: "",
-      amountPaid: "",
-      dateStated: "",
-      dateEnded: "",
-    });
-
-    onSuccessfulSubmit(values);
+    // only clear if explicitly approved
+    if (result?.success) {
+      setValues(defaultValues);
+      setErrors({});
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        api: result?.message || "Submission failed",
+      }));
+    }
   }
 
   return (
@@ -187,6 +184,7 @@ const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
                       className="form__input"
                       placeholder="Amount Paid"
                       required
+                      value={values.amountPaid}
                       onChange={handleChange}
                     />
                     {errors["amountPaid"] && (
@@ -206,6 +204,7 @@ const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
                       className="form__input"
                       placeholder="Amount Owed"
                       required
+                      value={values.amountOwed}
                       onChange={handleChange}
                     />
                     {errors["amountOwed"] && (
@@ -245,7 +244,9 @@ const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
             </label>
           );
         })}
-
+        {errors.api && (
+          <span className="form__final-error-message">{errors.api}</span>
+        )}
         <button
           type="submit"
           className="form__submit-btn"

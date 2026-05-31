@@ -8,13 +8,13 @@ function checkResponse(res) {
     return Promise.reject(err);
   });
 }
-export const register = ({ email, password }) => {
+export const register = ({ email, password, name, rate, phone, footer }) => {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ email, password, name, rate, phone, footer }),
   }).then(checkResponse);
 };
 

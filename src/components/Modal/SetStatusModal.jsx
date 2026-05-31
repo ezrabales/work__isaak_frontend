@@ -8,7 +8,7 @@ const SetStatusModal = ({ selectedJob, setJobs, token }) => {
   if (modalOpen !== "setStatus") return;
 
   function editJob(values) {
-    updateJobStatus({
+    return updateJobStatus({
       token,
       jobId: selectedJob._id,
       paymentStatus: values.status,
@@ -30,9 +30,17 @@ const SetStatusModal = ({ selectedJob, setJobs, token }) => {
         );
 
         setModalOpen(false);
+        return { success: true };
       })
       .catch((err) => {
         console.error(err);
+        return {
+          success: false,
+          message:
+            err?.message ||
+            err?.response?.data?.message ||
+            "Failed to update job",
+        };
       });
   }
 
@@ -58,6 +66,8 @@ const SetStatusModal = ({ selectedJob, setJobs, token }) => {
         onSuccessfulSubmit={editJob}
         initialValues={{
           status: selectedJob.paymentStatus,
+          amountOwed: selectedJob.amountOwed ? selectedJob.amountOwed : "",
+          amountPaid: selectedJob.amountPaid ? selectedJob.amountPaid : "",
         }}
         inputs={[
           {

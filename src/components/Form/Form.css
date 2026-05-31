@@ -24,10 +24,17 @@
   border-color: red;
 }
 
-.form__error-message {
+.form__error-message,
+.form__final-error-message {
   color: red;
   height: 18px;
   font-weight: 300;
+}
+
+.form__final-error-message {
+  width: 100%;
+  display: block;
+  margin-bottom: 10px;
 }
 
 .form__submit-btn {

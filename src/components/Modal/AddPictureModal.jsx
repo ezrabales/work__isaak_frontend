@@ -6,6 +6,7 @@ import { uploadPicture } from "../../utils/pictures";
 
 const AddPictureModal = ({ setPhotos, invoiceNum, token }) => {
   const { modalOpen, setModalOpen } = useGlobal();
+  const { submitTo } = useGlobal();
   const [loading, setLoading] = useState(false);
 
   if (modalOpen !== "addPicture") return null;
@@ -43,21 +44,39 @@ const AddPictureModal = ({ setPhotos, invoiceNum, token }) => {
         },
       ]);
 
-      uploadPicture({
+      return uploadPicture({
         src: data.secure_url,
         description: values.description,
         assetId: data.asset_id,
         invoiceNumber: invoiceNum,
         token: token,
       })
-        .then(() => setModalOpen("pictures"))
+        .then(() => {
+          setModalOpen(submitTo || "pictures");
+          setLoading(false);
+          return { success: true };
+        })
         .catch((err) => {
           console.error(err);
+          return {
+            success: false,
+            message:
+              err?.message ||
+              err?.response?.data?.message ||
+              "Failed to upload picture",
+          };
         });
 
       setLoading(false);
     } catch (err) {
       console.error(err);
+      return {
+        success: false,
+        message:
+          err?.message ||
+          err?.response?.data?.message ||
+          "Failed to upload picture",
+      };
     }
   }
 

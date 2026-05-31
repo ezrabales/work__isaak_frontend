@@ -130,3 +130,8 @@
   background-color: rgb(253, 122, 122);
   margin-bottom: 15px;
 }
+
+.modal__children-container_scroll-y {
+  max-height: 80vh;
+  overflow-y: auto;
+}

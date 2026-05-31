@@ -35,3 +35,13 @@ export const getPictures = ({ token, invoiceNumber }) => {
     },
   }).then(checkResponse);
 };
+
+export const deletePicture = ({ token, picId }) => {
+  return fetch(`${BASE_URL}/pictures/${picId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  }).then(checkResponse);
+};

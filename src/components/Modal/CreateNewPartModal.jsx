@@ -8,7 +8,7 @@ const CreateNewPartModal = ({ token, setParts, back = false }) => {
   if (modalOpen !== "createPart") return;
 
   function createNewPart(e) {
-    createPart({ token, name: e.name, cost: e.cost })
+    return createPart({ token, name: e.name, cost: e.cost })
       .then((res) => {
         setParts((prev) => [
           ...prev,
@@ -19,9 +19,19 @@ const CreateNewPartModal = ({ token, setParts, back = false }) => {
             quantity: 0,
           },
         ]);
-        setModalOpen(back);
+        setModalOpen(back || "part");
+        return { success: true };
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        return {
+          success: false,
+          message:
+            err?.message ||
+            err?.response?.data?.message ||
+            "Failed to create new part",
+        };
+      });
   }
 
   return (

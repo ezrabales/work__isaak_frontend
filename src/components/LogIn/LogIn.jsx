@@ -11,32 +11,62 @@ const LogIn = ({ setIsLoggedIn }) => {
 
   const from = location.state?.from?.pathname || "/";
 
-  const handleLogIn = ({ email, password }) => {
+  const handleLogIn = ({ email, password }) =>
     authorize({ email, password })
       .then((res) => {
         if (res.token) {
           localStorage.setItem("jwt", res.token);
           setIsLoggedIn(true);
           navigate(from, { replace: true });
+          return { success: true };
         }
+        return {
+          success: false,
+          message: "No token returned",
+        };
       })
-      .catch(console.error);
-  };
+      .catch((err) => {
+        console.error(err);
+        return {
+          success: false,
+          message:
+            err?.message || err?.response?.data?.message || "Login failed",
+        };
+      });
 
-  const handleRegister = ({ email, password }) => {
-    register({ password, email })
+  const handleRegister = (values) => {
+    return register({
+      email: values.email,
+      password: values.password,
+      name: values.name,
+      rate: values.rate,
+      phone: values.phone,
+      footer: {
+        companyName: values.companyName,
+        address: values.address,
+        payableNote: values.payableNote,
+        thankYou: values.thankYou,
+      },
+    })
       .then(() => {
-        return authorize({ email, password });
+        return authorize({ email: values.email, password: values.password });
       })
       .then((res) => {
         if (res.token) {
           localStorage.setItem("jwt", res.token);
+          setIsLoggedIn(true);
+          navigate(from, { replace: true });
+          return { success: true };
         }
-        setIsLoggedIn(true);
-        navigate(from, { replace: true });
+        return { success: false, message: "No token returned" };
       })
       .catch((err) => {
-        console.error("Registration or login error:", err);
+        console.error(err);
+        return {
+          success: false,
+          message:
+            err?.message || err?.response?.data?.message || "Register failed",
+        };
       });
   };
 
@@ -70,7 +100,7 @@ const LogIn = ({ setIsLoggedIn }) => {
             className="login__switch-btn"
             onClick={() => setAuthOption("register")}
           >
-            Register
+            OR Register
           </button>
         </div>
       </div>
@@ -83,6 +113,12 @@ const LogIn = ({ setIsLoggedIn }) => {
           <Form
             onSuccessfulSubmit={handleRegister}
             inputs={[
+              {
+                name: "name",
+                type: "text",
+                placeholder: "Name",
+                labelText: "Name *",
+              },
               {
                 name: "email",
                 type: "email",
@@ -97,6 +133,46 @@ const LogIn = ({ setIsLoggedIn }) => {
                 labelText: "Password *",
                 required: true,
               },
+              {
+                name: "rate",
+                type: "number",
+                placeholder: "Hourly Rate",
+                labelText: "Hourly Rate",
+              },
+
+              <div className="login__form-break">
+                The following inputs will be displayed under each invoice:
+              </div>,
+              {
+                name: "phone",
+                type: "number",
+                placeholder: "Phone Number",
+                labelText: "Phone Number",
+              },
+              {
+                name: "companyName",
+                type: "text",
+                placeholder: "Company Name",
+                labelText: "Company name",
+              },
+              {
+                name: "address",
+                type: "text",
+                placeholder: "For checks",
+                labelText: "Address",
+              },
+              {
+                name: "payableNote",
+                type: "text",
+                placeholder: "Pay me in this way:",
+                labelText: "Payable Note",
+              },
+              {
+                name: "thankYou",
+                type: "text",
+                placeholder: "A thank you note",
+                labelText: "Thank You Note",
+              },
             ]}
           />
         </div>
@@ -105,7 +181,7 @@ const LogIn = ({ setIsLoggedIn }) => {
             className="login__switch-btn"
             onClick={() => setAuthOption("logIn")}
           >
-            Log In
+            OR Log In
           </button>
         </div>
       </div>

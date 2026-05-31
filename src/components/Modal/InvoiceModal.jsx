@@ -1,6 +1,5 @@
 import "./InvoiceModal.css";
 import Modal from "./Modal";
-import Form from "../Form/Form";
 import { useGlobal } from "../GlobalState/GlobalState";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "../../hooks/useForm";
@@ -19,6 +18,7 @@ const InvoiceModal = ({ invoiceNum, token }) => {
 
   const [partsTabOpen, setPartsTabOpen] = useState(true);
   const [chargesTabOpen, setChargesTabOpen] = useState(true);
+
   const [totalForParts, setTotalForParts] = useState();
   const [totalForAdditions, setTotalForAdditions] = useState();
   const [localHrRate, setLocalHrRate] = useState(0);
@@ -157,7 +157,7 @@ const InvoiceModal = ({ invoiceNum, token }) => {
 
   if (modalOpen !== "invoice") return;
   return (
-    <Modal title={"Invoice"}>
+    <Modal title={"Invoice"} scrollY={false}>
       <p className="invoice-num">
         Invoice Number: <span className="invoice-num-num">{invoiceNum}</span>
       </p>
@@ -384,7 +384,7 @@ const InvoiceModal = ({ invoiceNum, token }) => {
 
               <p>$</p>
               <input
-                className="sections__section-input"
+                className="sections__section-input_large"
                 type="number"
                 value={finalTotal}
                 onChange={(e) => {
@@ -394,11 +394,20 @@ const InvoiceModal = ({ invoiceNum, token }) => {
             </div>
           </div>
         </div>
-        <button className="sections__section-btn" disabled={totalExtra !== 0}>
+        <button
+          className="sections__section-btn"
+          disabled={totalExtra !== 0}
+          onClick={() => {
+            setModalOpen("customer");
+          }}
+        >
           Invoice
         </button>
         {totalExtra != 0 && (
-          <button className="sections__section-btn">
+          <button
+            className="sections__section-btn"
+            onClick={() => setModalOpen("additional")}
+          >
             {totalExtra > 0
               ? "Add Additional Charge"
               : "Add Additional Discount"}

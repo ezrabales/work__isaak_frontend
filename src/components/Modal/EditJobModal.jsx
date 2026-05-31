@@ -3,8 +3,15 @@ import Form from "../Form/Form";
 import { useGlobal } from "../GlobalState/GlobalState";
 import { updateJob } from "../../utils/jobs";
 
-const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
+const EditJobModal = ({
+  selectedJob,
+  token,
+  setBody,
+  setStatus,
+  setInvoiceNum,
+}) => {
   const { modalOpen, setModalOpen } = useGlobal();
+  const { setSubmitTo } = useGlobal();
   if (modalOpen !== "editJob") return;
 
   function editJob(values) {
@@ -12,8 +19,11 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
       token,
       jobId: selectedJob._id,
       location: values.location,
+      name: values.name,
       notes: values.notes,
       email: values.email,
+      phone: values.phone,
+      description: values.description,
       paymentStatus: values.status,
       amountOwed: values.amountOwed || selectedJob.amountOwed || "",
       amountPaid: values.amountPaid || selectedJob.amountPaid || "",
@@ -32,10 +42,8 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
                   row[4],
                   setStatus(res.paymentStatus),
                   row[6],
-                  new Date(res.dateStarted).toLocaleDateString(),
-                  res.dateEnded
-                    ? new Date(res.dateEnded).toLocaleDateString()
-                    : "",
+                  res.dateStarted,
+                  res.dateEnded,
                   res.dateEnded
                     ? (() => {
                         const diff =
@@ -52,9 +60,14 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
           ),
         );
         setModalOpen(false);
+        return { success: true };
       })
       .catch((err) => {
         console.error(err);
+        return {
+          success: false,
+          message: err?.message || err?.response?.data?.message || "Failed to ",
+        };
       });
   }
 
@@ -68,15 +81,16 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
         onSuccessfulSubmit={editJob}
         initialValues={{
           location: selectedJob.location,
+          name: selectedJob.name,
           notes: selectedJob.notes,
           email: selectedJob.email,
+          phone: selectedJob.phone,
+          description: selectedJob.description,
           status: selectedJob.paymentStatus,
-          dateStarted: selectedJob.dateStarted
-            ? new Date(selectedJob.dateStarted).toISOString().split("T")[0]
-            : "",
-          dateEnded: selectedJob.dateEnded
-            ? new Date(selectedJob.dateEnded).toISOString().split("T")[0]
-            : "",
+          dateStarted: selectedJob.dateStarted,
+          dateEnded: selectedJob.dateEnded,
+          amountOwed: selectedJob.amountOwed ? selectedJob.amountOwed : "",
+          amountPaid: selectedJob.amountPaid ? selectedJob.amountPaid : "",
         }}
         inputs={[
           {
@@ -85,6 +99,12 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
             placeholder: "Location",
             labelText: "Location *",
             required: true,
+          },
+          {
+            name: "name",
+            type: "text",
+            placeholder: "Name",
+            labelText: "Name",
           },
           {
             name: "notes",
@@ -98,9 +118,26 @@ const EditJobModal = ({ selectedJob, token, setBody, setStatus }) => {
             placeholder: "Email",
             labelText: "Email",
           },
+          {
+            name: "phone",
+            type: "tel",
+            placeholder: "Phone Number",
+            labelText: "Phone Number",
+          },
+          {
+            name: "description",
+            type: "text",
+            placeholder: "Description",
+            labelText: "Description",
+          },
           <button
             className="edit__btn"
-            onClick={() => setModalOpen("editPictures")}
+            type="button"
+            onClick={() => {
+              setInvoiceNum(selectedJob.invoiceNumber);
+              setSubmitTo("editPictures");
+              setModalOpen("editPictures");
+            }}
           >
             Edit Pictures
           </button>,

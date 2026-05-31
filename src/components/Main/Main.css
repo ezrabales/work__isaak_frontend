@@ -1,7 +1,6 @@
 .main {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 150px);
 }
 
 .main__job-btn {
