@@ -165,7 +165,7 @@ const LogIn = ({ setIsLoggedIn }) => {
                 name: "payableNote",
                 type: "text",
                 placeholder: "Pay me in this way:",
-                labelText: "Payable Note",
+                labelText: "Payable Note *",
                 required: true,
               },
               {

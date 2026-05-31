@@ -54,7 +54,7 @@ const AddPartModal = ({ token, invoiceNum }) => {
       }}
     >
       {parts.length <= 0 ? (
-        <div>No Parts</div>
+        <div className="no-data">No Parts</div>
       ) : (
         <Table
           head={["Name", "Cost", "Add", "Quantity"]}

@@ -226,7 +226,7 @@ const History = () => {
   return (
     <div className="main">
       {body.length <= 0 ? (
-        <div>No Jobs</div>
+        <div className="no-data">No Jobs</div>
       ) : (
         <Table
           head={[

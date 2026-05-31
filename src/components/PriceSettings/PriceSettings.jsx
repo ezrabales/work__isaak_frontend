@@ -46,7 +46,7 @@ const PriceSettings = () => {
       <div className="settings__table-container">
         <h3 className="settings__table-title">Parts</h3>
         {parts.length <= 0 ? (
-          <div>No Parts</div>
+          <div className="no-data">No Parts</div>
         ) : (
           <Table
             head={["Name", "Cost"]}

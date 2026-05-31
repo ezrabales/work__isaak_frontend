@@ -230,7 +230,7 @@ const Main = () => {
   return (
     <div className="main">
       {jobs?.length <= 0 ? (
-        <div>No Jobs</div>
+        <div className="no-data">No Jobs</div>
       ) : (
         <Table
           head={[

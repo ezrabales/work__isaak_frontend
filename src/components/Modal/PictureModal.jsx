@@ -35,7 +35,7 @@ const PictureModal = ({ invoiceNum, token }) => {
         <div className="pic__loading">Loading...</div>
       ) : photos.length <= 0 ? (
         <>
-          <div className="pic__none">No pictures</div>
+          <div className="no-data">No pictures</div>
         </>
       ) : (
         <div

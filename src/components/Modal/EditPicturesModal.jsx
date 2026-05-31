@@ -38,7 +38,7 @@ const EditPicturesModal = ({ invoiceNum, token }) => {
     <Modal title={"Edit Pictures"}>
       {photos.length <= 0 ? (
         <>
-          <div className="pic__none">No pictures</div>
+          <div className="no-data">No pictures</div>
         </>
       ) : (
         <div className="edit-pic">
