@@ -1,5 +1,7 @@
 export const BASE_URL =
-  process.env.NODE_ENV === "production" ? "TODO" : "http://localhost:3001";
+  process.env.NODE_ENV === "production"
+    ? "https://plumbing-tech.onrender.com"
+    : "http://localhost:3001";
 
 function checkResponse(res) {
   if (res.ok) return res.json();
