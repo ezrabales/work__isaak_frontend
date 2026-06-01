@@ -277,7 +277,7 @@ const InvoiceModal = ({ invoiceNum, token }) => {
               />
             </div>
             <div className="sections__section-part">
-              <p>$/hr </p>
+              <p>$</p>
               <input
                 className="sections__section-input"
                 type="number"
@@ -285,6 +285,7 @@ const InvoiceModal = ({ invoiceNum, token }) => {
                 value={values.hrRate}
                 onChange={handleChange}
               />
+              <p>/hr</p>
             </div>
             <div className="sections__section-part">
               <p>$</p>
