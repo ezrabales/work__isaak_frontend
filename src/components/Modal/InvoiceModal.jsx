@@ -329,7 +329,7 @@ const InvoiceModal = ({ invoiceNum, token }) => {
               return (
                 <div className="sections__section-row">
                   <div className="sections__section-part">
-                    <p>description: </p>
+                    <p>Description: </p>
                   </div>
                   <div className="sections__section-part">
                     <p>{addition.reason}</p>
