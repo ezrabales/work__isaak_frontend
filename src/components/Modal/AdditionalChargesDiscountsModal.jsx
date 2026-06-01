@@ -19,6 +19,8 @@ const AdditionalChargesDiscountsModal = ({ invoiceNum }) => {
     >
       <Form
         onSuccessfulSubmit={(e) => {
+          const savedInvoice =
+            JSON.parse(localStorage.getItem(invoiceNum)) || {};
           const currentAdditions = savedInvoice.additions || [];
 
           try {
