@@ -12,7 +12,7 @@ const AdditionalChargesDiscountsModal = ({ invoiceNum }) => {
   if (modalOpen !== "additional") return;
   return (
     <Modal
-      title={"Parts"}
+      title={"Additional Charge/Discount"}
       backTo={() => {
         setModalOpen("invoice");
       }}
