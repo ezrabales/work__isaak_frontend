@@ -136,7 +136,7 @@ const History = () => {
 
   useEffect(() => {
     setBody(
-      jobs.map((job) => {
+      jobs.map((job, i) => {
         return [
           job.invoiceNumber,
           job.location,

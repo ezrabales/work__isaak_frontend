@@ -12,13 +12,15 @@ const AdditionalChargesDiscountsModal = ({ invoiceNum }) => {
   if (modalOpen !== "additional") return;
   return (
     <Modal
-      title={"Parts"}
+      title={"Additional Charge/Discount"}
       backTo={() => {
         setModalOpen("invoice");
       }}
     >
       <Form
         onSuccessfulSubmit={(e) => {
+          const savedInvoice =
+            JSON.parse(localStorage.getItem(invoiceNum)) || {};
           const currentAdditions = savedInvoice.additions || [];
 
           try {

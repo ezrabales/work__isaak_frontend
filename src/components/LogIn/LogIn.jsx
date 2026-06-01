@@ -36,6 +36,7 @@ const LogIn = ({ setIsLoggedIn }) => {
 
   const handleRegister = (values) => {
     return register({
+      key: values.key,
       email: values.email,
       password: values.password,
       name: values.name,
@@ -114,10 +115,17 @@ const LogIn = ({ setIsLoggedIn }) => {
             onSuccessfulSubmit={handleRegister}
             inputs={[
               {
+                name: "key",
+                type: "text",
+                placeholder: "Register Key",
+                labelText: "Register Key *",
+                required: true,
+              },
+              {
                 name: "name",
                 type: "text",
                 placeholder: "Name",
-                labelText: "Name *",
+                labelText: "Name",
               },
               {
                 name: "email",
@@ -165,8 +173,7 @@ const LogIn = ({ setIsLoggedIn }) => {
                 name: "payableNote",
                 type: "text",
                 placeholder: "Pay me in this way:",
-                labelText: "Payable Note *",
-                required: true,
+                labelText: "Payable Note",
               },
               {
                 name: "thankYou",

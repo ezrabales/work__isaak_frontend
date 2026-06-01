@@ -46,8 +46,8 @@ const AddJobModal = ({ setJobs, token }) => {
           {
             name: "name",
             type: "text",
-            placeholder: "Name",
-            labelText: "Name",
+            placeholder: "Customer Name",
+            labelText: "Customer Name",
           },
           {
             name: "notes",

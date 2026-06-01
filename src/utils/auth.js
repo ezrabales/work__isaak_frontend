@@ -1,5 +1,7 @@
 export const BASE_URL =
-  process.env.NODE_ENV === "production" ? "https://plumbing-tech.onrender.com" : "http://localhost:3001";
+  process.env.NODE_ENV === "production"
+    ? "https://plumbing-tech.onrender.com"
+    : "http://localhost:3001";
 
 function checkResponse(res) {
   if (res.ok) return res.json();
@@ -8,13 +10,21 @@ function checkResponse(res) {
     return Promise.reject(err);
   });
 }
-export const register = ({ email, password, name, rate, phone, footer }) => {
+export const register = ({
+  key,
+  email,
+  password,
+  name,
+  rate,
+  phone,
+  footer,
+}) => {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password, name, rate, phone, footer }),
+    body: JSON.stringify({ key, email, password, name, rate, phone, footer }),
   }).then(checkResponse);
 };
 

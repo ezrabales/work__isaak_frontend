@@ -189,7 +189,7 @@ const InvoiceModal = ({ invoiceNum, token }) => {
           >
             {updatedInvoice.map((part, index) => {
               return (
-                <div className="sections__section-row">
+                <div key={index} className="sections__section-row">
                   <div className="sections__section-part">
                     <p>Part: </p>
                   </div>
@@ -277,14 +277,15 @@ const InvoiceModal = ({ invoiceNum, token }) => {
               />
             </div>
             <div className="sections__section-part">
-              <p>$/hr </p>
+              <p>$</p>
               <input
                 className="sections__section-input"
                 type="number"
                 name="hrRate"
-                value={values.hrRate}
+                value={values.hrRate || 0}
                 onChange={handleChange}
               />
+              <p>/hr</p>
             </div>
             <div className="sections__section-part">
               <p>$</p>
@@ -326,9 +327,9 @@ const InvoiceModal = ({ invoiceNum, token }) => {
           >
             {updatedAdditions.map((addition, index) => {
               return (
-                <div className="sections__section-row">
+                <div key={index} className="sections__section-row">
                   <div className="sections__section-part">
-                    <p>description: </p>
+                    <p>Description: </p>
                   </div>
                   <div className="sections__section-part">
                     <p>{addition.reason}</p>
@@ -406,7 +407,10 @@ const InvoiceModal = ({ invoiceNum, token }) => {
         {totalExtra != 0 && (
           <button
             className="sections__section-btn"
-            onClick={() => setModalOpen("additional")}
+            onClick={() => {
+              setTotalExtra(0);
+              setModalOpen("additional");
+            }}
           >
             {totalExtra > 0
               ? "Add Additional Charge"
