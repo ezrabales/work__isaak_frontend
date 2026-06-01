@@ -144,7 +144,7 @@
 }
 
 .sections__section-bottom.open {
-  max-height: 500px;
+  max-height: none;
   overflow: visible;
   opacity: 1;
 }
@@ -157,11 +157,6 @@
 }
 
 .sections__section-extra {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translate(120%, -50%);
-
   padding: 2px 4px;
   border: 1px solid #888;
   border-radius: 5px;

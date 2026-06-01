@@ -157,7 +157,7 @@ const InvoiceModal = ({ invoiceNum, token }) => {
 
   if (modalOpen !== "invoice") return;
   return (
-    <Modal title={"Invoice"} scrollY={false}>
+    <Modal title={"Invoice"}>
       <p className="invoice-num">
         Invoice Number: <span className="invoice-num-num">{invoiceNum}</span>
       </p>
@@ -203,7 +203,10 @@ const InvoiceModal = ({ invoiceNum, token }) => {
                   </div>
                   <div className="sections__section-part">
                     {part.extra !== 0 && part.extra != null && (
-                      <div className="sections__section-extra">
+                      <div
+                        className="sections__section-extra"
+                        style={{ marginRight: "20px" }}
+                      >
                         {plusMinusMoneyFormat(part.extra)}
                       </div>
                     )}
