@@ -34,7 +34,7 @@ const PriceSettings = () => {
             className="settings__input"
             type="number"
             name="hours"
-            value={hourlyRate}
+            value={hourlyRate || 0}
             onChange={(e) => {
               setHourlyRate(e.target.value);
               editRate({ token, rate: e.target.value });
@@ -52,7 +52,7 @@ const PriceSettings = () => {
             head={["Name", "Cost"]}
             body={parts.map(({ _id, name, cost }, index) => [
               name,
-              <div className="settings__table-btn-container">
+              <div key={index} className="settings__table-btn-container">
                 {cost}
                 <button
                   id={_id}

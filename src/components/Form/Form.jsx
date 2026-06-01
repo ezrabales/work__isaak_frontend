@@ -137,7 +137,7 @@ const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
 
           if (input.type === "radio") {
             return (
-              <>
+              <div key={i}>
                 <div className="form__radio" key={i}>
                   <p>{input.labelText}</p>
 
@@ -215,7 +215,7 @@ const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
                     )}
                   </label>
                 )}
-              </>
+              </div>
             );
           }
 

@@ -7,7 +7,6 @@ import { getRate } from "../../utils/auth";
 
 const InvoiceModal = ({ invoiceNum, token }) => {
   const savedInvoice = JSON.parse(localStorage.getItem(invoiceNum)) || {};
-  console.log(savedInvoice);
 
   const [invoice, setInvoice] = useState(savedInvoice.parts || []);
   const [additions, setAdditions] = useState(savedInvoice.additions || []);
@@ -190,7 +189,7 @@ const InvoiceModal = ({ invoiceNum, token }) => {
           >
             {updatedInvoice.map((part, index) => {
               return (
-                <div className="sections__section-row">
+                <div key={index} className="sections__section-row">
                   <div className="sections__section-part">
                     <p>Part: </p>
                   </div>
@@ -283,7 +282,7 @@ const InvoiceModal = ({ invoiceNum, token }) => {
                 className="sections__section-input"
                 type="number"
                 name="hrRate"
-                value={values.hrRate}
+                value={values.hrRate || 0}
                 onChange={handleChange}
               />
               <p>/hr</p>
@@ -328,7 +327,7 @@ const InvoiceModal = ({ invoiceNum, token }) => {
           >
             {updatedAdditions.map((addition, index) => {
               return (
-                <div className="sections__section-row">
+                <div key={index} className="sections__section-row">
                   <div className="sections__section-part">
                     <p>Description: </p>
                   </div>
