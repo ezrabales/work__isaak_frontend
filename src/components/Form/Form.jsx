@@ -22,6 +22,7 @@ import { useGlobal } from "../GlobalState/GlobalState";
 const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
   const { modalOpen, setModalOpen } = useGlobal();
   const defaultValues = {
+    key: "",
     name: "",
     location: "",
     notes: "",
