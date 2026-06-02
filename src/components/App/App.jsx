@@ -13,6 +13,7 @@ import { checkToken } from "../../utils/auth";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(true);
   const [token, setToken] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const App = () => {
     const from = location.pathname === "/login" ? "/" : location.pathname;
 
     if (!currentToken) {
+      setIsLoggingIn(false);
       return;
     }
 
@@ -32,12 +34,17 @@ const App = () => {
         setIsLoggedIn(true);
         navigate(from, { replace: true });
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setIsLoggingIn(false));
   }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  if (isLoggingIn) {
+    return null;
+  }
 
   return (
     <GlobalProvider>

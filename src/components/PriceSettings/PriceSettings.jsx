@@ -9,6 +9,7 @@ const PriceSettings = () => {
   const token = localStorage.getItem("jwt");
   const { modalOpen, setModalOpen } = useGlobal();
   const { parts, setParts } = useGlobal();
+  const [loadingParts, setLoadingParts] = useState(true);
   const [hourlyRate, setHourlyRate] = useState("");
 
   useEffect(() => {
@@ -20,7 +21,8 @@ const PriceSettings = () => {
     // parts
     getParts({ token })
       .then((res) => setParts(res.data))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => setLoadingParts(false));
   }, []);
 
   return (
@@ -45,7 +47,9 @@ const PriceSettings = () => {
       </div>
       <div className="settings__table-container">
         <h3 className="settings__table-title">Parts</h3>
-        {parts.length <= 0 ? (
+        {loadingParts ? (
+          <div className="loading-data" />
+        ) : parts.length <= 0 ? (
           <div className="no-data">No Parts</div>
         ) : (
           <Table

@@ -26,3 +26,25 @@
   margin: 20px 0;
   font-size: 30px;
 }
+
+.loading-data {
+  height: 75px;
+  border-radius: 10px;
+  margin: 25px 15px;
+
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: rgb(179, 179, 179);
+  }
+
+  50% {
+    background-color: rgb(216, 216, 216);
+  }
+
+  100% {
+    background-color: rgb(179, 179, 179);
+  }
+}

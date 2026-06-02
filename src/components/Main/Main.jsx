@@ -21,6 +21,7 @@ const Main = () => {
   const [invoiceNum, setInvoiceNum] = useState();
   const [photos, setPhotos] = useState([]);
   const [jobs, setJobs] = useState([]);
+  const [loadingJobs, setLoadingJobs] = useState(true);
   const [selectedJob, setSelectedJob] = useState();
   const [body, setBody] = useState([]);
   const token = localStorage.getItem("jwt");
@@ -87,7 +88,8 @@ const Main = () => {
       })
       .catch((err) => {
         console.error(err);
-      });
+      })
+      .finally(() => setLoadingJobs(false));
   }, []);
 
   function setStatus(job) {
@@ -227,27 +229,39 @@ const Main = () => {
     );
   }, [jobs]);
 
+  if (loadingJobs) {
+    return (
+      <div className="main">
+        <div className="loading-data" />
+      </div>
+    );
+  }
+
+  if (jobs?.length <= 0) {
+    return (
+      <div className="main">
+        <div className="no-data">No Jobs</div>
+      </div>
+    );
+  }
+
   return (
     <div className="main">
-      {jobs?.length <= 0 ? (
-        <div className="no-data">No Jobs</div>
-      ) : (
-        <Table
-          head={[
-            "Invoice Number",
-            "Location",
-            "Name",
-            "Notes",
-            "Email",
-            "Phone",
-            "Job Description",
-            "Pictures",
-            "Payment Status",
-            "Invoice",
-          ]}
-          body={body}
-        />
-      )}
+      <Table
+        head={[
+          "Invoice Number",
+          "Location",
+          "Name",
+          "Notes",
+          "Email",
+          "Phone",
+          "Job Description",
+          "Pictures",
+          "Payment Status",
+          "Invoice",
+        ]}
+        body={body}
+      />
       <button className="main__job-btn" onClick={() => setModalOpen("job")}>
         Add Job
       </button>
