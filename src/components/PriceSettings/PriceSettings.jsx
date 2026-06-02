@@ -11,6 +11,7 @@ const PriceSettings = () => {
   const { parts, setParts } = useGlobal();
   const [loadingParts, setLoadingParts] = useState(true);
   const [hourlyRate, setHourlyRate] = useState("");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     // rate
@@ -52,28 +53,43 @@ const PriceSettings = () => {
         ) : parts.length <= 0 ? (
           <div className="no-data">No Parts</div>
         ) : (
-          <Table
-            head={["Name", "Cost"]}
-            body={parts.map(({ _id, name, cost }, index) => [
-              name,
-              <div key={index} className="settings__table-btn-container">
-                {cost}
-                <button
-                  id={_id}
-                  onClick={(e) => {
-                    const id = e.target.id;
-                    deletePart({ token, id }).then((res) => {
-                      setParts((prev) =>
-                        prev.filter((part) => part._id !== res.id),
-                      );
-                    });
-                  }}
-                >
-                  Delete
-                </button>
-              </div>,
-            ])}
-          />
+          <>
+            <div className="settings__search-container">
+              <input
+                className="settings__search-bar"
+                type="text"
+                placeholder="Search parts..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+            <Table
+              head={["Name", "Cost"]}
+              body={parts
+                .filter((part) =>
+                  part.name.toLowerCase().includes(search.toLowerCase()),
+                )
+                .map(({ _id, name, cost }, index) => [
+                  name,
+                  <div key={index} className="settings__table-btn-container">
+                    {cost}
+                    <button
+                      id={_id}
+                      onClick={(e) => {
+                        const id = e.target.id;
+                        deletePart({ token, id }).then((res) => {
+                          setParts((prev) =>
+                            prev.filter((part) => part._id !== res.id),
+                          );
+                        });
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>,
+                ])}
+            />
+          </>
         )}
       </div>
       <button
