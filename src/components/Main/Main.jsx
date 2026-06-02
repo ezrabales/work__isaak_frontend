@@ -33,6 +33,24 @@ const Main = () => {
     return;
   };
 
+  function getTotalOwed() {
+    if (!jobs || jobs.length <= 0) return 0;
+
+    return jobs.reduce(
+      (total, job) => total + (Number(job.amountOwed) || 0),
+      0,
+    );
+  }
+
+  function getTotalPaid() {
+    if (!jobs || jobs.length <= 0) return 0;
+
+    return jobs.reduce(
+      (total, job) => total + (Number(job.amountPaid) || 0),
+      0,
+    );
+  }
+
   function handleViewInvoice(e) {
     return getInvoice({
       token,
@@ -247,6 +265,21 @@ const Main = () => {
 
   return (
     <div className="main">
+      <div className="main__dash-container">
+        <div className="main__dash-amount-owed">
+          <p className="main__dash-text">Total Invoiced: </p>
+          <p className="main__dash-text">${getTotalOwed()}</p>
+        </div>
+        <div className="main__dash-amount-paid">
+          <p className="main__dash-text">Total Recieved: </p>
+          <p
+            className="main__dash-text"
+            style={{ color: "green", fontWeight: "300" }}
+          >
+            ${getTotalPaid()}
+          </p>
+        </div>
+      </div>
       <Table
         head={[
           "Invoice Number",
