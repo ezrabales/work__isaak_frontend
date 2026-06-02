@@ -1,0 +1,30 @@
+.profile__edit-btn,
+.profile__edit-password-btn {
+  margin: 20px;
+  padding: 12px;
+  background-color: rgb(63, 152, 230);
+  border-radius: 10px;
+  width: calc(100% - 40px);
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.profile__edit-btn:hover,
+.profile__edit-password-btn:hover {
+  box-shadow: 0px 0px 5px black;
+}
+
+.profile__edit-btn:active,
+.profile__edit-password-btn:active {
+  box-shadow: inset 0px 0px 5px black;
+}
+
+.profile__edit-btn:disabled,
+.profile__edit-password-btn:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.profile__form-container {
+  margin: 20px;
+}

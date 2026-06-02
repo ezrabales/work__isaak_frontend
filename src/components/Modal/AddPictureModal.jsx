@@ -91,7 +91,7 @@ const AddPictureModal = ({ setPhotos, invoiceNum, token }) => {
             {
               name: "file",
               type: "file",
-              accept: "image/*,.pdf",
+              accept: "image/*",
               required: true,
             },
             {

@@ -10,6 +10,7 @@ import Footer from "../Footer/Footer";
 import ProtectedRoute from "../ProtectedRoute";
 import LogIn from "../LogIn/LogIn";
 import { checkToken } from "../../utils/auth";
+import Profile from "../Profile/Profile";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -59,6 +60,14 @@ const App = () => {
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>
               <Main />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Profile />
             </ProtectedRoute>
           }
         />
