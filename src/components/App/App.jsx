@@ -10,9 +10,11 @@ import Footer from "../Footer/Footer";
 import ProtectedRoute from "../ProtectedRoute";
 import LogIn from "../LogIn/LogIn";
 import { checkToken } from "../../utils/auth";
+import Profile from "../Profile/Profile";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(true);
   const [token, setToken] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
@@ -22,6 +24,7 @@ const App = () => {
     const from = location.pathname === "/login" ? "/" : location.pathname;
 
     if (!currentToken) {
+      setIsLoggingIn(false);
       return;
     }
 
@@ -32,12 +35,17 @@ const App = () => {
         setIsLoggedIn(true);
         navigate(from, { replace: true });
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setIsLoggingIn(false));
   }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  if (isLoggingIn) {
+    return null;
+  }
 
   return (
     <GlobalProvider>
@@ -52,6 +60,14 @@ const App = () => {
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>
               <Main />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Profile />
             </ProtectedRoute>
           }
         />

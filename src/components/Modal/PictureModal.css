@@ -28,6 +28,9 @@
   scroll-snap-align: center;
 }
 
+.pic__pic_pdf {
+}
+
 .pic__description {
   max-width: 80vw;
   word-wrap: break-word;

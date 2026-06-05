@@ -8,6 +8,11 @@ const Footer = ({ isLoggedIn, setIsLoggedIn }) => {
   const token = localStorage.getItem("jwt");
   return (
     <div className="footer">
+      {isLoggedIn && (
+        <NavLink className="footer__edit-profile-btn" to={"/profile"}>
+          Edit Profile
+        </NavLink>
+      )}
       <div className="footer__nav-container">
         <NavLink to={"/"}>Home</NavLink>
         <NavLink to={"/settings"}>Price Settings</NavLink>

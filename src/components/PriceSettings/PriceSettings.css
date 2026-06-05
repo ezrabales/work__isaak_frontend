@@ -80,3 +80,16 @@
   opacity: 0.5;
   pointer-events: none;
 }
+
+.settings__search-container {
+  display: flex;
+  display: 100%;
+}
+
+.settings__search-bar {
+  width: 100%;
+  padding: 10px;
+  margin: 15px 20px;
+  border: 1px solid #363636;
+  border-radius: 6px;
+}

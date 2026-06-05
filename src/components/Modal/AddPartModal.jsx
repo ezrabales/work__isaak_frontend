@@ -9,6 +9,7 @@ const AddPartModal = ({ token, invoiceNum }) => {
   const { modalOpen, setModalOpen } = useGlobal();
   const { parts, setParts } = useGlobal();
   const [localParts, setLocalParts] = useState([]);
+  const [search, setSearch] = useState("");
 
   function setPartsValue(num, value) {
     setParts((prev) =>
@@ -56,35 +57,50 @@ const AddPartModal = ({ token, invoiceNum }) => {
       {parts.length <= 0 ? (
         <div className="no-data">No Parts</div>
       ) : (
-        <Table
-          head={["Name", "Cost", "Add", "Quantity"]}
-          body={parts.map((part, index) => {
-            return [
-              part.name,
-              `$${part.cost}`,
-              <button
-                className="sections__section-row-btn"
-                onClick={() => {
-                  setPartsValue(index);
-                }}
-              >
-                Add Part
-              </button>,
-              part.quantity > 0 ? (
-                <input
-                  type="number"
-                  className="sections__section-input"
-                  value={part.quantity}
-                  onChange={(e) => {
-                    setPartsValue(index, e.target.value);
-                  }}
-                />
-              ) : (
-                ""
-              ),
-            ];
-          })}
-        />
+        <>
+          <div className="settings__search-container">
+            <input
+              className="settings__search-bar"
+              type="text"
+              placeholder="Search parts..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <Table
+            head={["Name", "Cost", "Add", "Quantity"]}
+            body={parts
+              .filter((part) =>
+                part.name.toLowerCase().includes(search.toLowerCase()),
+              )
+              .map((part, index) => {
+                return [
+                  part.name,
+                  `$${part.cost}`,
+                  <button
+                    className="sections__section-row-btn"
+                    onClick={() => {
+                      setPartsValue(index);
+                    }}
+                  >
+                    Add Part
+                  </button>,
+                  part.quantity > 0 ? (
+                    <input
+                      type="number"
+                      className="sections__section-input"
+                      value={part.quantity}
+                      onChange={(e) => {
+                        setPartsValue(index, e.target.value);
+                      }}
+                    />
+                  ) : (
+                    ""
+                  ),
+                ];
+              })}
+          />
+        </>
       )}
 
       {parts.length <= 0 ? (

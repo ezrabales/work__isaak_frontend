@@ -29,6 +29,13 @@
   opacity: 1;
 }
 
+.footer__edit-profile-btn {
+  position: absolute;
+  width: fit-content;
+  right: calc(100% - 100px);
+  opacity: 0.7;
+}
+
 .footer__logout-btn {
   position: absolute;
   width: fit-content;

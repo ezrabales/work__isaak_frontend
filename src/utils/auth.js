@@ -50,7 +50,7 @@ export const checkToken = (token) => {
 };
 
 export const editRate = ({ token, rate }) => {
-  return fetch(`${BASE_URL}/users/me`, {
+  return fetch(`${BASE_URL}/users/rate`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -67,5 +67,27 @@ export const getRate = ({ token }) => {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
+  }).then(checkResponse);
+};
+
+export const editUser = ({ token, body }) => {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(body),
+  }).then(checkResponse);
+};
+
+export const changePassword = ({ token, password }) => {
+  return fetch(`${BASE_URL}/users/me/password`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ password }),
   }).then(checkResponse);
 };

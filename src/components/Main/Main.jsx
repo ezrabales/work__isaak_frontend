@@ -21,6 +21,7 @@ const Main = () => {
   const [invoiceNum, setInvoiceNum] = useState();
   const [photos, setPhotos] = useState([]);
   const [jobs, setJobs] = useState([]);
+  const [loadingJobs, setLoadingJobs] = useState(true);
   const [selectedJob, setSelectedJob] = useState();
   const [body, setBody] = useState([]);
   const token = localStorage.getItem("jwt");
@@ -31,6 +32,24 @@ const Main = () => {
     }
     return;
   };
+
+  function getTotalOwed() {
+    if (!jobs || jobs.length <= 0) return 0;
+
+    return jobs.reduce(
+      (total, job) => total + (Number(job.amountOwed) || 0),
+      0,
+    );
+  }
+
+  function getTotalPaid() {
+    if (!jobs || jobs.length <= 0) return 0;
+
+    return jobs.reduce(
+      (total, job) => total + (Number(job.amountPaid) || 0),
+      0,
+    );
+  }
 
   function handleViewInvoice(e) {
     return getInvoice({
@@ -87,7 +106,8 @@ const Main = () => {
       })
       .catch((err) => {
         console.error(err);
-      });
+      })
+      .finally(() => setLoadingJobs(false));
   }, []);
 
   function setStatus(job) {
@@ -227,27 +247,54 @@ const Main = () => {
     );
   }, [jobs]);
 
+  if (loadingJobs) {
+    return (
+      <div className="main">
+        <div className="loading-data" />
+      </div>
+    );
+  }
+
+  if (jobs?.length <= 0) {
+    return (
+      <div className="main">
+        <div className="no-data">No Jobs</div>
+      </div>
+    );
+  }
+
   return (
     <div className="main">
-      {jobs?.length <= 0 ? (
-        <div className="no-data">No Jobs</div>
-      ) : (
-        <Table
-          head={[
-            "Invoice Number",
-            "Location",
-            "Name",
-            "Notes",
-            "Email",
-            "Phone",
-            "Job Description",
-            "Pictures",
-            "Payment Status",
-            "Invoice",
-          ]}
-          body={body}
-        />
-      )}
+      <div className="main__dash-container">
+        <div className="main__dash-amount-owed">
+          <p className="main__dash-text">Total Invoiced: </p>
+          <p className="main__dash-text">${getTotalOwed()}</p>
+        </div>
+        <div className="main__dash-amount-paid">
+          <p className="main__dash-text">Total Recieved: </p>
+          <p
+            className="main__dash-text"
+            style={{ color: "green", fontWeight: "300" }}
+          >
+            ${getTotalPaid()}
+          </p>
+        </div>
+      </div>
+      <Table
+        head={[
+          "Invoice Number",
+          "Location",
+          "Name",
+          "Notes",
+          "Email",
+          "Phone",
+          "Job Description",
+          "Pictures",
+          "Payment Status",
+          "Invoice",
+        ]}
+        body={body}
+      />
       <button className="main__job-btn" onClick={() => setModalOpen("job")}>
         Add Job
       </button>

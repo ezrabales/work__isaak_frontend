@@ -24,6 +24,7 @@ const History = () => {
   const [invoiceNum, setInvoiceNum] = useState();
   const [photos, setPhotos] = useState([]);
   const [jobs, setJobs] = useState([]);
+  const [loadingJobs, setLoadingJobs] = useState(true);
   const [selectedJob, setSelectedJob] = useState();
   const [body, setBody] = useState([]);
   const token = localStorage.getItem("jwt");
@@ -35,7 +36,8 @@ const History = () => {
       })
       .catch((err) => {
         console.error(err);
-      });
+      })
+      .finally(() => setLoadingJobs(false));
   }, [modalOpen == false]);
 
   const formatMoney = (amount, places = 2) => {
@@ -223,31 +225,43 @@ const History = () => {
     );
   }, [jobs]);
 
+  if (loadingJobs) {
+    return (
+      <div className="main">
+        <div className="loading-data" />
+      </div>
+    );
+  }
+
+  if (body?.length <= 0) {
+    return (
+      <div className="main">
+        <div className="no-data">No Jobs</div>
+      </div>
+    );
+  }
+
   return (
     <div className="main">
-      {body.length <= 0 ? (
-        <div className="no-data">No Jobs</div>
-      ) : (
-        <Table
-          head={[
-            "Invoice Number",
-            "Location",
-            "Name",
-            "Notes",
-            "Email",
-            "Phone",
-            "Job Description",
-            "Pictures",
-            "Payment Status",
-            "Invoice",
-            "Date Started",
-            "Date Ended",
-            "Total Time",
-            "Edit",
-          ]}
-          body={body}
-        />
-      )}
+      <Table
+        head={[
+          "Invoice Number",
+          "Location",
+          "Name",
+          "Notes",
+          "Email",
+          "Phone",
+          "Job Description",
+          "Pictures",
+          "Payment Status",
+          "Invoice",
+          "Date Started",
+          "Date Ended",
+          "Total Time",
+          "Edit",
+        ]}
+        body={body}
+      />
       <CreateNewPartModal token={token} setParts={setParts} />
       <AdditionalChargesDiscountsModal invoiceNum={invoiceNum} />
       <AddPartModal token={token} invoiceNum={invoiceNum} />
