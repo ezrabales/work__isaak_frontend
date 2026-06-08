@@ -11,10 +11,10 @@ const AddPartModal = ({ token, invoiceNum }) => {
   const [localParts, setLocalParts] = useState([]);
   const [search, setSearch] = useState("");
 
-  function setPartsValue(num, value) {
+  function setPartsValue(id, value) {
     setParts((prev) =>
       prev.map((part, index) =>
-        index === num
+        part._id === id
           ? {
               ...part,
               quantity: value != null ? Number(value) : part.quantity + 1,
@@ -80,7 +80,7 @@ const AddPartModal = ({ token, invoiceNum }) => {
                   <button
                     className="sections__section-row-btn"
                     onClick={() => {
-                      setPartsValue(index);
+                      setPartsValue(part._id);
                     }}
                   >
                     Add Part
@@ -91,7 +91,7 @@ const AddPartModal = ({ token, invoiceNum }) => {
                       className="sections__section-input"
                       value={part.quantity}
                       onChange={(e) => {
-                        setPartsValue(index, e.target.value);
+                        setPartsValue(part._id, e.target.value);
                       }}
                     />
                   ) : (
