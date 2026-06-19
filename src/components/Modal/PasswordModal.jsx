@@ -1,7 +1,6 @@
 import Modal from "./Modal";
 import Form from "../Form/Form";
 import { useGlobal } from "../GlobalState/GlobalState";
-import { createPart } from "../../utils/parts";
 import { changePassword } from "../../utils/auth";
 
 const PasswordModal = ({ token }) => {

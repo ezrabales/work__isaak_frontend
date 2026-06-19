@@ -24,6 +24,9 @@ const InvoiceModal = ({ invoiceNum, token }) => {
   const [localHrRate, setLocalHrRate] = useState(0);
   const { modalOpen, setModalOpen } = useGlobal();
 
+  const [markupStyle, setMarkupStyle] = useState("custom");
+  const [markupPercentage, setMarkupPercentage] = useState(0);
+
   useEffect(() => {
     getRate({ token }).then((res) => {
       setLocalHrRate(res.rate);
@@ -152,15 +155,54 @@ const InvoiceModal = ({ invoiceNum, token }) => {
   }, [invoiceNum, values.hours, values.hrRate, values.totalForHours]);
 
   function plusMinusMoneyFormat(num) {
-    return `${num > 0 ? "+" : "-"}$${Math.abs(num)}`;
+    return `${num > 0 ? "+" : "-"}$${Number(Math.abs(num)).toFixed(3)}`;
   }
-
   if (modalOpen !== "invoice") return;
   return (
     <Modal title={"Invoice"}>
       <p className="invoice-num">
         Invoice Number: <span className="invoice-num-num">{invoiceNum}</span>
       </p>
+      <div className="invoice__markup-section">
+        <p className="invoice__markup-title">Part Markup:</p>
+        <div className="invoice__markup">
+          <button
+            className={`invoice__markup-option ${markupStyle == "percentage" ? "invoice__markup-option_on" : ""}`}
+            onClick={() => setMarkupStyle("percentage")}
+          >
+            Percentage
+          </button>
+          <button
+            className={`invoice__markup-option ${markupStyle == "custom" ? "invoice__markup-option_on" : ""}`}
+            onClick={() => setMarkupStyle("custom")}
+          >
+            Custom
+          </button>
+        </div>
+        {markupStyle == "percentage" && (
+          <>
+            <input
+              className="sections__section-input"
+              type="number"
+              onChange={(e) => setMarkupPercentage(e.target.value)}
+            />
+            %
+            <button
+              className="invoice__markup-confirm-btn"
+              onClick={() =>
+                setUpdatedInvoice((prev) =>
+                  prev.map((p, i) => ({
+                    ...p,
+                    extra: p.cost * p.quantity * (markupPercentage * 0.01),
+                  })),
+                )
+              }
+            >
+              Confirm
+            </button>
+          </>
+        )}
+      </div>
       <div className="sections">
         {/* parts */}
         <div className="sections__section">
@@ -218,6 +260,7 @@ const InvoiceModal = ({ invoiceNum, token }) => {
                         value={part.cost * part.quantity + (part.extra || 0)}
                         onChange={(e) => {
                           const tempValue = Number(e.target.value);
+                          setMarkupStyle("custom");
 
                           setUpdatedInvoice((prev) =>
                             prev.map((p, i) =>

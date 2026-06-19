@@ -6,75 +6,99 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const LogIn = ({ setIsLoggedIn }) => {
   const [authOption, setAuthOption] = useState("logIn");
+  const [loggingIn, setLoggingIn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const from = location.state?.from?.pathname || "/";
 
-  const handleLogIn = ({ email, password }) =>
-    authorize({ email, password })
-      .then((res) => {
-        if (res.token) {
-          localStorage.setItem("jwt", res.token);
-          setIsLoggedIn(true);
-          navigate(from, { replace: true });
-          return { success: true };
-        }
+  const handleLogIn = async ({ email, password }) => {
+    try {
+      setLoggingIn(true);
+
+      const res = await authorize({ email, password });
+
+      if (!res.token) {
         return {
           success: false,
           message: "No token returned",
         };
-      })
-      .catch((err) => {
-        console.error(err);
-        return {
-          success: false,
-          message:
-            err?.message || err?.response?.data?.message || "Login failed",
-        };
+      }
+
+      localStorage.setItem("jwt", res.token);
+      setIsLoggedIn(true);
+      navigate(from, { replace: true });
+
+      return { success: true };
+    } catch (err) {
+      console.error(err);
+
+      return {
+        success: false,
+        message: err?.response?.data?.message || err?.message || "Login failed",
+      };
+    } finally {
+      setLoggingIn(false);
+    }
+  };
+
+  const handleRegister = async (values) => {
+    try {
+      setLoggingIn(true);
+
+      const registerRes = await register({
+        key: values.key,
+        email: values.email,
+        password: values.password,
+        name: values.name,
+        rate: values.rate,
+        phone: values.phone,
+        footer: {
+          companyName: values.companyName,
+          address: values.address,
+          payableNote: values.payableNote,
+          thankYou: values.thankYou,
+        },
       });
 
-  const handleRegister = (values) => {
-    return register({
-      key: values.key,
-      email: values.email,
-      password: values.password,
-      name: values.name,
-      rate: values.rate,
-      phone: values.phone,
-      footer: {
-        companyName: values.companyName,
-        address: values.address,
-        payableNote: values.payableNote,
-        thankYou: values.thankYou,
-      },
-    })
-      .then(() => {
-        return authorize({ email: values.email, password: values.password });
-      })
-      .then((res) => {
-        if (res.token) {
-          localStorage.setItem("jwt", res.token);
-          setIsLoggedIn(true);
-          navigate(from, { replace: true });
-          return { success: true };
-        }
-        return { success: false, message: "No token returned" };
-      })
-      .catch((err) => {
-        console.error(err);
+      const authRes = await authorize({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (!authRes.token) {
         return {
           success: false,
-          message:
-            err?.message || err?.response?.data?.message || "Register failed",
+          message: "No token returned",
         };
-      });
+      }
+
+      localStorage.setItem("jwt", authRes.token);
+      setIsLoggedIn(true);
+      navigate(from, { replace: true });
+
+      return {
+        success: true,
+      };
+    } catch (err) {
+      console.error(err);
+
+      return {
+        success: false,
+        message:
+          err?.response?.data?.message || err?.message || "Register failed",
+      };
+    } finally {
+      setLoggingIn(false);
+    }
   };
 
   if (authOption == "logIn")
     return (
       <div className="login">
-        <h2 className="login__title">Log In</h2>
+        <h2 className="login__title">
+          {loggingIn ? "Logging In Please Wait" : "Log In"}
+        </h2>
         <div className="login__form-container">
           <Form
             onSuccessfulSubmit={handleLogIn}
@@ -109,7 +133,9 @@ const LogIn = ({ setIsLoggedIn }) => {
   if (authOption == "register")
     return (
       <div className="login">
-        <h2 className="login__title">Register</h2>
+        <h2 className="login__title">
+          {loggingIn ? "Registering Please Wait" : "Register"}
+        </h2>
         <div className="login__form-container">
           <Form
             onSuccessfulSubmit={handleRegister}

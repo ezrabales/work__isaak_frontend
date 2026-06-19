@@ -46,6 +46,7 @@ const Form = ({ inputs = [], onSuccessfulSubmit, initialValues = {} }) => {
     address: "",
     payableNote: "",
     thankYou: "",
+    partNumber: "",
   };
   const { values, handleChange, setValues } = useForm({
     ...defaultValues,

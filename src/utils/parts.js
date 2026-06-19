@@ -11,7 +11,7 @@ function checkResponse(res) {
   });
 }
 
-export const createPart = ({ token, name, cost }) => {
+export const createPart = ({ token, name, cost, partNumber }) => {
   return fetch(`${BASE_URL}/parts`, {
     method: "POST",
     headers: {
@@ -21,6 +21,7 @@ export const createPart = ({ token, name, cost }) => {
     body: JSON.stringify({
       name,
       cost,
+      partNumber,
     }),
   }).then(checkResponse);
 };
@@ -42,5 +43,20 @@ export const deletePart = ({ token, id }) => {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
+  }).then(checkResponse);
+};
+
+export const updatePart = ({ token, id, name, partNumber, cost }) => {
+  return fetch(`${BASE_URL}/parts/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      partNumber,
+      name,
+      cost,
+    }),
   }).then(checkResponse);
 };

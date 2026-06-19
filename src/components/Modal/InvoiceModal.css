@@ -1,6 +1,54 @@
 .sections {
 }
 
+.invoice__markup-section {
+  margin-bottom: 10px;
+  padding: 5px;
+  background-color: #e6e6e6;
+  border-bottom: 1px solid rgb(88, 88, 88);
+  border-top: 1px solid rgb(88, 88, 88);
+}
+
+.invoice__markup-title {
+  border-bottom: 1px solid rgb(160, 159, 159);
+  padding: 3px 0;
+  margin-bottom: 5px;
+}
+
+.invoice__markup {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.invoice__markup-option {
+  padding: 7px;
+  border-radius: 10px;
+  background-color: red;
+  transition: all 0.2s ease;
+}
+
+.invoice__markup-confirm-btn {
+  padding: 5px;
+  background-color: rgb(63, 152, 230);
+  border-radius: 10px;
+  margin-left: 10px;
+  transition: all 0.2s ease;
+}
+
+.invoice__markup-confirm-btn:hover {
+  box-shadow: 0px 0px 5px black;
+}
+
+.invoice__markup-option:hover {
+  box-shadow: 0px 0px 5px black;
+}
+
+.invoice__markup-option_on {
+  background-color: green;
+}
+
 .sections__section {
   border-top: 1px solid rgb(88, 88, 88);
   display: flex;

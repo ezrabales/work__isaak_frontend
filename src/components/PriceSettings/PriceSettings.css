@@ -36,13 +36,27 @@
   align-items: center;
 }
 
-.settings__table-btn-container button {
+.settings__table-btns-wrapper {
+  display: flex;
+  gap: 20px;
+}
+
+.settings__table-btn-delete,
+.settings__table-btn-edit {
   padding: 5px 10px;
   background-color: rgb(230, 63, 63);
   border-radius: 10px;
   text-align: center;
   transition: all 0.2s ease;
   color: white;
+}
+
+.settings__table-btn-edit {
+  background-color: rgb(63, 152, 230);
+}
+
+.settings__table-span {
+  width: 100%;
 }
 
 .settings__table-btn-container button:hover {
