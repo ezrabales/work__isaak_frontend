@@ -4,7 +4,8 @@ import Table from "../Table/Table";
 import CreateNewPartModal from "../Modal/CreateNewPartModal";
 import { useGlobal } from "../GlobalState/GlobalState";
 import { editRate, getRate } from "../../utils/auth";
-import { createPart, deletePart, getParts } from "../../utils/parts";
+import { deletePart, getParts } from "../../utils/parts";
+import EditPartModal from "../Modal/EditPartModal";
 const PriceSettings = () => {
   const token = localStorage.getItem("jwt");
   const { modalOpen, setModalOpen } = useGlobal();
@@ -12,6 +13,7 @@ const PriceSettings = () => {
   const [loadingParts, setLoadingParts] = useState(true);
   const [hourlyRate, setHourlyRate] = useState("");
   const [search, setSearch] = useState("");
+  const [selectedPart, setSelectedPart] = useState();
 
   useEffect(() => {
     // rate
@@ -64,28 +66,48 @@ const PriceSettings = () => {
               />
             </div>
             <Table
-              head={["Name", "Cost"]}
+              head={["Name", "Cost", "Part Number"]}
               body={parts
-                .filter((part) =>
-                  part.name.toLowerCase().includes(search.toLowerCase()),
+                .filter(
+                  (part) =>
+                    part.name?.toLowerCase().includes(search.toLowerCase()) ||
+                    String(part.partNumber ?? "")
+                      .toLowerCase()
+                      .includes(search.toLowerCase()),
                 )
-                .map(({ _id, name, cost }, index) => [
+                .map(({ _id, name, cost, partNumber }, index) => [
                   name,
+                  cost,
                   <div key={index} className="settings__table-btn-container">
-                    {cost}
-                    <button
-                      id={_id}
-                      onClick={(e) => {
-                        const id = e.target.id;
-                        deletePart({ token, id }).then((res) => {
-                          setParts((prev) =>
-                            prev.filter((part) => part._id !== res.id),
+                    {partNumber || <span className="settings__table-span" />}
+                    <div className="settings__table-btns-wrapper">
+                      <button
+                        className="settings__table-btn-edit"
+                        id={_id}
+                        onClick={(e) => {
+                          setSelectedPart(
+                            parts.find((part) => part._id === _id),
                           );
-                        });
-                      }}
-                    >
-                      Delete
-                    </button>
+                          setModalOpen("editPart");
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="settings__table-btn-delete"
+                        id={_id}
+                        onClick={(e) => {
+                          const id = e.target.id;
+                          deletePart({ token, id }).then((res) => {
+                            setParts((prev) =>
+                              prev.filter((part) => part._id !== res.id),
+                            );
+                          });
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>,
                 ])}
             />
@@ -101,6 +123,11 @@ const PriceSettings = () => {
         Add Part
       </button>
       <CreateNewPartModal token={token} setParts={setParts} />
+      <EditPartModal
+        token={token}
+        setParts={setParts}
+        selectedPart={selectedPart}
+      />
     </div>
   );
 };

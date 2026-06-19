@@ -68,15 +68,20 @@ const AddPartModal = ({ token, invoiceNum }) => {
             />
           </div>
           <Table
-            head={["Name", "Cost", "Add", "Quantity"]}
+            head={["Name", "Cost", "Part Number", "Add", "Quantity"]}
             body={parts
-              .filter((part) =>
-                part.name.toLowerCase().includes(search.toLowerCase()),
+              .filter(
+                (part) =>
+                  part.name?.toLowerCase().includes(search.toLowerCase()) ||
+                  String(part.partNumber ?? "")
+                    .toLowerCase()
+                    .includes(search.toLowerCase()),
               )
               .map((part, index) => {
                 return [
                   part.name,
                   `$${part.cost}`,
+                  part.partNumber,
                   <button
                     className="sections__section-row-btn"
                     onClick={() => {
