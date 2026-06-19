@@ -255,49 +255,52 @@ const Main = () => {
     );
   }
 
-  if (jobs?.length <= 0) {
-    return (
-      <div className="main">
-        <div className="no-data">No Jobs</div>
-      </div>
-    );
-  }
-
   return (
     <div className="main">
-      <div className="main__dash-container">
-        <div className="main__dash-amount-owed">
-          <p className="main__dash-text">Total Invoiced: </p>
-          <p className="main__dash-text">${getTotalOwed()}</p>
-        </div>
-        <div className="main__dash-amount-paid">
-          <p className="main__dash-text">Total Recieved: </p>
-          <p
-            className="main__dash-text"
-            style={{ color: "green", fontWeight: "300" }}
-          >
-            ${getTotalPaid()}
-          </p>
-        </div>
-      </div>
-      <Table
-        head={[
-          "Invoice Number",
-          "Location",
-          "Name",
-          "Notes",
-          "Email",
-          "Phone",
-          "Job Description",
-          "Pictures",
-          "Payment Status",
-          "Invoice",
-        ]}
-        body={body}
-      />
-      <button className="main__job-btn" onClick={() => setModalOpen("job")}>
-        Add Job
-      </button>
+      {jobs?.length <= 0 ? (
+        <>
+          <div className="no-data">No Jobs</div>
+          <button className="main__job-btn" onClick={() => setModalOpen("job")}>
+            Add Job
+          </button>
+        </>
+      ) : (
+        <>
+          <div className="main__dash-container">
+            <div className="main__dash-amount-owed">
+              <p className="main__dash-text">Total Invoiced: </p>
+              <p className="main__dash-text">${formatMoney(getTotalOwed())}</p>
+            </div>
+            <div className="main__dash-amount-paid">
+              <p className="main__dash-text">Total Recieved: </p>
+              <p
+                className="main__dash-text"
+                style={{ color: "green", fontWeight: "300" }}
+              >
+                ${formatMoney(getTotalPaid())}
+              </p>
+            </div>
+          </div>
+          <Table
+            head={[
+              "Invoice Number",
+              "Location",
+              "Name",
+              "Notes",
+              "Email",
+              "Phone",
+              "Job Description",
+              "Pictures",
+              "Payment Status",
+              "Invoice",
+            ]}
+            body={body}
+          />
+          <button className="main__job-btn" onClick={() => setModalOpen("job")}>
+            Add Job
+          </button>
+        </>
+      )}
       <AddJobModal setJobs={setJobs} token={token} />
       <CreateNewPartModal token={token} setParts={setParts} back={"part"} />
       <AdditionalChargesDiscountsModal invoiceNum={invoiceNum} />
