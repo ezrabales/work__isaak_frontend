@@ -17,6 +17,7 @@ const ConfirmInvoiceModal = ({ invoiceNum, selectedJob, token, setJobs }) => {
   const [total, setTotal] = useState("");
   const [user, setUser] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState({});
 
   useEffect(() => {
     checkToken(token)
@@ -101,18 +102,14 @@ const ConfirmInvoiceModal = ({ invoiceNum, selectedJob, token, setJobs }) => {
         setModalOpen(false);
       })
 
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        setError(err);
+        console.error(err);
+      })
       .finally(() => setIsLoading(false));
   }
 
   if (modalOpen !== "confirm") return null;
-  if (isLoading) {
-    return (
-      <Modal title={"Confirm Invoice"}>
-        <div>Loading...</div>
-      </Modal>
-    );
-  }
   return (
     <Modal
       title={"Confirm Invoice"}
@@ -199,6 +196,8 @@ const ConfirmInvoiceModal = ({ invoiceNum, selectedJob, token, setJobs }) => {
             <div>${formatMoney(total)}</div>
           </div>
         </div>
+        {isLoading ? <div>Loading...</div> : ""}
+        {error ? <div className="confirm__error">{error.message}</div> : ""}
         <div className="confirm__btn-container">
           <button className="confirm__confirm-btn" onClick={handleSendInvoice}>
             Invoice
