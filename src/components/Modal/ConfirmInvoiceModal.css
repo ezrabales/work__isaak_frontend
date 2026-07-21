@@ -83,3 +83,9 @@
 .confirm__footer p {
   text-align: center;
 }
+
+.confirm__error {
+  color: red;
+  height: 18px;
+  font-weight: 300;
+}

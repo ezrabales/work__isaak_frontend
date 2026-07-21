@@ -62,84 +62,81 @@ const Profile = () => {
     <div className="profile">
       {editing ? (
         <div className="profile__form-container">
-          {loading ? (
-            <div>Loading...</div>
-          ) : (
-            <Form
-              onSuccessfulSubmit={handleEditUser}
-              initialValues={{
-                name: user?.name,
-                email: user?.email,
-                rate: user?.rate,
-                phone: user?.phone,
-                address: user?.footer?.address,
-                companyName: user?.footer?.companyName,
-                payableNote: user?.footer?.payableNote,
-                thankYou: user?.footer?.thankYou,
-              }}
-              inputs={[
-                {
-                  name: "name",
-                  type: "text",
-                  placeholder: "Name",
-                  labelText: "Name",
-                },
-                {
-                  name: "email",
-                  type: "email",
-                  placeholder: "Email",
-                  labelText: "Email",
-                },
-                <button
-                  className="profile__edit-password-btn"
-                  type="button"
-                  onClick={() => setModalOpen("password")}
-                >
-                  Change Password
-                </button>,
-                {
-                  name: "rate",
-                  type: "number",
-                  placeholder: "Hourly Rate",
-                  labelText: "Hourly Rate",
-                },
+          {loading ? <div>Loading...</div> : ""}
+          <Form
+            onSuccessfulSubmit={handleEditUser}
+            initialValues={{
+              name: user?.name,
+              email: user?.email,
+              rate: user?.rate,
+              phone: user?.phone,
+              address: user?.footer?.address,
+              companyName: user?.footer?.companyName,
+              payableNote: user?.footer?.payableNote,
+              thankYou: user?.footer?.thankYou,
+            }}
+            inputs={[
+              {
+                name: "name",
+                type: "text",
+                placeholder: "Name",
+                labelText: "Name",
+              },
+              {
+                name: "email",
+                type: "email",
+                placeholder: "Email",
+                labelText: "Email",
+              },
+              <button
+                className="profile__edit-password-btn"
+                type="button"
+                onClick={() => setModalOpen("password")}
+              >
+                Change Password
+              </button>,
+              {
+                name: "rate",
+                type: "number",
+                placeholder: "Hourly Rate",
+                labelText: "Hourly Rate",
+              },
 
-                <div className="login__form-break">
-                  The following inputs will be displayed under each invoice:
-                </div>,
-                {
-                  name: "phone",
-                  type: "number",
-                  placeholder: "Phone Number",
-                  labelText: "Phone Number",
-                },
-                {
-                  name: "companyName",
-                  type: "text",
-                  placeholder: "Company Name",
-                  labelText: "Company name",
-                },
-                {
-                  name: "address",
-                  type: "text",
-                  placeholder: "For checks",
-                  labelText: "Address",
-                },
-                {
-                  name: "payableNote",
-                  type: "text",
-                  placeholder: "Pay me in this way:",
-                  labelText: "Payable Note",
-                },
-                {
-                  name: "thankYou",
-                  type: "text",
-                  placeholder: "A thank you note",
-                  labelText: "Thank You Note",
-                },
-              ]}
-            />
-          )}
+              <div className="login__form-break">
+                The following inputs will be displayed under each invoice:
+              </div>,
+              {
+                name: "phone",
+                type: "number",
+                placeholder: "Phone Number",
+                labelText: "Phone Number",
+              },
+              {
+                name: "companyName",
+                type: "text",
+                placeholder: "Company Name",
+                labelText: "Company name",
+              },
+              {
+                name: "address",
+                type: "text",
+                placeholder: "For checks",
+                labelText: "Address",
+              },
+              {
+                name: "payableNote",
+                type: "text",
+                placeholder: "Pay me in this way:",
+                labelText: "Payable Note",
+              },
+              {
+                name: "thankYou",
+                type: "text",
+                placeholder: "A thank you note",
+                labelText: "Thank You Note",
+              },
+            ]}
+          />
         </div>
       ) : (
         <>
