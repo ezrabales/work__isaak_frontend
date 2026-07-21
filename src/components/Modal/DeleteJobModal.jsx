@@ -69,7 +69,7 @@ const DeleteJobModal = ({ selectedJob, token, setBody }) => {
           </button>
         </div>
         {isLoading ? <div>loading...</div> : ""}
-        {error ? <div className="delete__error">{error}</div> : ""}
+        {error ? <div className="delete__error">{error.message}</div> : ""}
       </>
     </Modal>
   );
