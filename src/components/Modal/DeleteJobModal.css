@@ -58,3 +58,9 @@
 .delete__confirm-btn:active {
   box-shadow: inset 0px 0px 5px black;
 }
+
+.delete__error {
+  color: red;
+  height: 18px;
+  font-weight: 300;
+}
