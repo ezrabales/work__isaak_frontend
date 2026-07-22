@@ -63,7 +63,7 @@ git clone https://github.com/ezrabales/work__isaak_frontend.git
 Navigate to the project
 
 ```bash
-cd Isaak_frontend
+cd work__isaak_frontend
 ```
 
 Install dependencies
