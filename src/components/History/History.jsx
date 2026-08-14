@@ -15,7 +15,7 @@ import DeleteJobModal from "../Modal/DeleteJobModal";
 import { getJobs } from "../../utils/jobs";
 import CustomerInfoModal from "../Modal/CustomerInfoModal";
 import ConfirmInvoiceModal from "../Modal/ConfirmInvoiceModal";
-import { getInvoice } from "../../utils/invoice";
+import { getInvoice, resendInvoice } from "../../utils/invoice";
 
 const History = () => {
   const { parts, setParts } = useGlobal();
@@ -27,6 +27,7 @@ const History = () => {
   const [loadingJobs, setLoadingJobs] = useState(true);
   const [selectedJob, setSelectedJob] = useState();
   const [body, setBody] = useState([]);
+  const [resentInvoice, setResentInvoice] = useState([]);
   const token = localStorage.getItem("jwt");
 
   useEffect(() => {
@@ -91,6 +92,14 @@ const History = () => {
 
         // Cleanup
         setTimeout(() => URL.revokeObjectURL(url), 1000);
+      })
+      .catch(console.error);
+  }
+
+  function handleResendInvoice(e) {
+    return resendInvoice({ token, invoiceNumber: e.target.id })
+      .then(() => {
+        setResentInvoice((prev) => [...prev, e.target.id]);
       })
       .catch(console.error);
   }
@@ -172,6 +181,26 @@ const History = () => {
               >
                 view invoice
               </button>
+              <button
+                id={job.invoiceNumber}
+                className={`table__btn ${
+                  resentInvoice.some(
+                    (invoiceNumber) =>
+                      String(invoiceNumber) === String(job.invoiceNumber),
+                  )
+                    ? "table__btn_disabled"
+                    : ""
+                }`}
+                style={{ width: "fit-content" }}
+                onClick={handleResendInvoice}
+              >
+                {resentInvoice.some(
+                  (invoiceNumber) =>
+                    String(invoiceNumber) === String(job.invoiceNumber),
+                )
+                  ? "Invoice Sent!"
+                  : "Resend Invoice"}
+              </button>
             </div>
           ) : job.paymentStatus == "Paid in Full" ? (
             <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -185,6 +214,26 @@ const History = () => {
                 onClick={handleViewInvoice}
               >
                 view invoice
+              </button>
+              <button
+                id={job.invoiceNumber}
+                className={`table__btn ${
+                  resentInvoice.some(
+                    (invoiceNumber) =>
+                      String(invoiceNumber) === String(job.invoiceNumber),
+                  )
+                    ? "table__btn_disabled"
+                    : ""
+                }`}
+                style={{ width: "fit-content" }}
+                onClick={handleResendInvoice}
+              >
+                {resentInvoice.some(
+                  (invoiceNumber) =>
+                    String(invoiceNumber) === String(job.invoiceNumber),
+                )
+                  ? "Invoice Sent!"
+                  : "Resend Invoice"}
               </button>
             </div>
           ) : (
@@ -223,7 +272,7 @@ const History = () => {
         ];
       }),
     );
-  }, [jobs]);
+  }, [jobs, resentInvoice]);
 
   if (loadingJobs) {
     return (

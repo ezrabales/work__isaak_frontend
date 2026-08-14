@@ -10,6 +10,7 @@ function checkResponse(res) {
     return Promise.reject(err);
   });
 }
+
 export const register = ({
   key,
   email,
