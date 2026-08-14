@@ -31,3 +31,13 @@ export const getInvoice = ({ token, invoiceNumber }) => {
     },
   }).then(checkResponse);
 };
+
+export const resendInvoice = ({ token, invoiceNumber }) => {
+  return fetch(`${BASE_URL}/invoice/resend/${invoiceNumber}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  }).then(checkResponse);
+};

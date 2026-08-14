@@ -32,6 +32,11 @@
   box-shadow: inset 0px 0px 5px black;
 }
 
+.table__btn_disabled {
+  pointer-events: none;
+  background-color: rgb(141, 141, 141);
+}
+
 table {
   width: calc(99% - 40px);
   border-collapse: collapse;
