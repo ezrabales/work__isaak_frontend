@@ -58,7 +58,7 @@ const EditPartModal = ({ token, setParts, selectedPart }) => {
           },
           {
             name: "partNumber",
-            type: "number",
+            type: "text",
             placeholder: "Part Number",
             labelText: "Part Number",
           },
