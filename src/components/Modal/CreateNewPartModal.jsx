@@ -66,7 +66,7 @@ const CreateNewPartModal = ({ token, setParts, back = false }) => {
           },
           {
             name: "partNumber",
-            type: "number",
+            type: "text",
             placeholder: "Part Number",
             labelText: "Part Number",
           },
