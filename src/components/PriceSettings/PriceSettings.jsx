@@ -65,6 +65,14 @@ const PriceSettings = () => {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
+            <button
+              className="settings__add-part-btn"
+              onClick={() => {
+                setModalOpen("createPart");
+              }}
+            >
+              Add Part
+            </button>
             <Table
               head={["Name", "Cost", "Part Number"]}
               body={parts
